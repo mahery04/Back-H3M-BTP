@@ -17,9 +17,11 @@ exports.findById = function (req, res) {
         res.json({
             tool_id:                commontools[0].tool_id,
             purchase_date:          moment(commontools[0].purchase_date).format('YYYY-MM-DD'),
+            vendor:                 commontools[0].vendor,
+            num_fact:               commontools[0].num_fact,
             identification_number:  commontools[0].identification_number,
             article_name:           commontools[0].article_name,
-            assignation_place:      commontools[0].assignation_place,
+            // assignation_place:      commontools[0].assignation_place,
             statue:                 commontools[0].statue,
             historical:             commontools[0].historical,
             material_number:        commontools[0].material_number,
