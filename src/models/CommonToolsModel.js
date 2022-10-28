@@ -7,9 +7,11 @@ var dateTime = date+' '+time;
 
 var Commontools = function (commontools) {
     this.purchase_date          = commontools.purchase_date;
+    this.vendor                 = commontools.vendor;
+    this.num_fact               = commontools.num_fact;
     this.identification_number  = commontools.identification_number;
     this.article_name           = commontools.article_name;
-    this.assignation_place      = commontools.assignation_place;
+    // this.assignation_place      = commontools.assignation_place;
     this.statue                 = commontools.statue;
     this.historical             = commontools.historical;
     this.material_number        = commontools.material_number;
@@ -55,7 +57,7 @@ Commontools.findAll = function (result) {
 };
 
 Commontools.update = function (id, commontools, result) {
-    connection.query("UPDATE common_tools SET purchase_date=?,identification_number=?,article_name=?,assignation_place=?,statue=?,historical=?,material_number=?,tooling_id=? WHERE tool_id = ? ", [commontools.purchase_date, commontools.identification_number, commontools.article_name, commontools.assignation_place, commontools.statue, commontools.historical, commontools.material_number, commontools.tooling_id, id], function (err, res) {
+    connection.query("UPDATE common_tools SET purchase_date=?,vendor=?,num_fact=?,identification_number=?,article_name=?,statue=?,historical=?,material_number=?,tooling_id=? WHERE tool_id = ? ", [commontools.purchase_date,commontools.vendor, commontools.num_fact,commontools.identification_number, commontools.article_name, commontools.statue, commontools.historical, commontools.material_number, commontools.tooling_id, id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);
