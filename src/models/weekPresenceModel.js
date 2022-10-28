@@ -46,11 +46,12 @@ Weekpresence.create = function (id, newWeekpresence, result) {
             console.log(res)
             result(null, res)
             connection.query(`SELECT * FROM week_presence ORDER BY weekpresence_id DESC LIMIT 0,1`, function (err, last_id) {
-                connection.query('SELECT * FROM days', function (err, days) {
-                    days.forEach(day => {
-                        connection.query('INSERT INTO daily_presence SET weekpresence_id=?,day_id=?,status=NULL,date=NULL,presence_salary=NULL,dailyemployee_id=?', [last_id[0].weekpresence_id, day.day_id, id])
-                    });
-                })
+                // connection.query('SELECT * FROM days', function (err, days) {
+                //     days.forEach(day => {
+                //         connection.query('INSERT INTO daily_presence SET weekpresence_id=?,day_id=?,status=NULL,date=NULL,presence_salary=NULL,dailyemployee_id=?', [last_id[0].weekpresence_id, day.day_id, id])
+                //     });
+                // })
+                
             })
         }
     })

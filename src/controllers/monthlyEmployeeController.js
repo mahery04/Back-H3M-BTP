@@ -28,7 +28,7 @@ exports.findById = function (req, res) {
             status:             monthlyemployee[0].status,
             code_chantier:      monthlyemployee[0].code_chantier,
             category:           monthlyemployee[0].category,
-            hiring_date:        moment(monthlyemployee[0].hiring_date).format('YYYY-MM-DD'),
+            hiring_date:        monthlyemployee[0].hiring_date,
             type_contrat:       monthlyemployee[0].type_contrat,
             evaluation:         monthlyemployee[0].evaluation,
             start_date:         monthlyemployee[0].start_date,

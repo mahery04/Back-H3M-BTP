@@ -27,7 +27,7 @@ exports.findById = function (req, res) {
             code_chantier:      dailyemployee[0].code_chantier,
             group:              dailyemployee[0].group,
             category:           dailyemployee[0].category,
-            hiring_date:        moment(dailyemployee[0].hiring_date).format('YYYY-MM-DD'),
+            hiring_date:        dailyemployee[0].hiring_date,
             type_contrat:       dailyemployee[0].type_contrat,
             evaluation:         dailyemployee[0].evaluation,
             start_date:         dailyemployee[0].start_date,
@@ -53,6 +53,11 @@ exports.create = function (req, res) {
 
 exports.update = function (req, res) {
     const newDailyemployee = new Dailyemployee(req.body);
+    if (newDailyemployee.start_date == "Invalid date" ) {
+        newDailyemployee.start_date == null
+    } else if (newDailyemployee.hiring_date == "Invalid date") {
+        newDailyemployee.hiring_date == null
+    }
     console.log(newDailyemployee);
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({ error: true, message: 'Please provide all required field' });
