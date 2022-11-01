@@ -37,6 +37,7 @@ const monthlyweekpresenceRoutes = require('./src/routes/monthlyWeekPresenceRoute
 const monthlypresenceRoutes = require('./src/routes/monthlyPresenceRoutes')
 const cantineRoutes = require('./src/routes/cantineRoutes')
 const congeRoutes = require('./src/routes/congeRoutes')
+const contratDailyEmployeeRoutes = require('./src/routes/contratDailyEmployeeRoutes')
 
 app.use('/api/dailyemployee', dailyEmployeeRoutes)
 app.use('/api/monthlyemployee', monthlyEmployeeRoutes)
@@ -54,6 +55,8 @@ app.use('/api/dailypresence', dailypresenceRoues)
 app.use('/api/monthlypresence', monthlypresenceRoutes)
 app.use('/api/cantine', cantineRoutes)
 app.use('/api/conge', congeRoutes)
+app.use('/api/contratdailyemployee', contratDailyEmployeeRoutes)
+
 
 app.use(express.static(
   path.join(__dirname,"./client/build")));

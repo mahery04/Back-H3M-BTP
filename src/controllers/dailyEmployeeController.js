@@ -1,5 +1,4 @@
 const Dailyemployee = require('../models/dailyEmployeeModel');
-var moment = require('moment')
 
 exports.findAll = function (req, res) {
     Dailyemployee.findAll(function (err, dailyemployee) {

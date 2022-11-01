@@ -11,7 +11,7 @@ var Personnaltools = function (personnaltools) {
     this.vendor                 = personnaltools.vendor
     this.invoice_number         = personnaltools.invoice_number
     this.article_name           = personnaltools.article_name
-    this.assignation_place      = personnaltools.assignation_place
+    // this.assignation_place      = personnaltools.assignation_place
     this.statue                 = personnaltools.statue
     this.historical             = personnaltools.historical
     this.material_number        = personnaltools.material_number
@@ -56,7 +56,7 @@ Personnaltools.findAll = function (result) {
 };
 
 Personnaltools.update = function (id, personnaltools, result) {
-    connection.query("UPDATE personnal_tools SET purchase_date=?,identification_number=?,vendor=?,invoice_number=?,article_name=?,assignation_place=?,statue=?,historical=?,material_number=? WHERE tool_id = ? ", [personnaltools.purchase_date, personnaltools.identification_number, personnaltools.vendor, personnaltools.invoice_number, personnaltools.article_name, personnaltools.assignation_place, personnaltools.statue, personnaltools.historical, personnaltools.material_number, id], function (err, res) {
+    connection.query("UPDATE personnal_tools SET purchase_date=?,identification_number=?,vendor=?,invoice_number=?,article_name=?,statue=?,historical=?,material_number=? WHERE tool_id = ? ", [personnaltools.purchase_date, personnaltools.identification_number, personnaltools.vendor, personnaltools.invoice_number, personnaltools.article_name, personnaltools.statue, personnaltools.historical, personnaltools.material_number, id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);
