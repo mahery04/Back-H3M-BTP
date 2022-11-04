@@ -5,6 +5,8 @@ const userController = require('../controllers/userController')
 
 router.get('/month',weekPresenceController.getMonth)
 
+router.get('/lastdate/:id',weekPresenceController.getLastDate)
+
 router.post('/view', weekPresenceController.globalView)
 
 router.post('/:id', weekPresenceController.create)
@@ -24,6 +26,10 @@ router.get('/presence/:id', weekPresenceController.nbPresence)
 router.put('/absence/:id', weekPresenceController.setAbsence)
 
 router.get('/absence/:id', weekPresenceController.nbAbsence)
+
+router.put('/halfday/:id', weekPresenceController.setHalfday)
+
+router.get('/halfday/:id', weekPresenceController.nbHalfday)
 
 router.get('/history/:id', weekPresenceController.history)
 

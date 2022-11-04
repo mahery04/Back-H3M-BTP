@@ -4,6 +4,8 @@ const monthlyWeekPresence = require('../controllers/monthlyWeekPresenceControlle
 
 router.get('/month',monthlyWeekPresence.getMonth)
 
+router.get('/lastdate/:id',monthlyWeekPresence.getLastDate)
+
 router.post('/view', monthlyWeekPresence.globalView)
 
 router.post('/:id', monthlyWeekPresence.create)

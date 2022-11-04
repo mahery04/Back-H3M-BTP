@@ -8,6 +8,14 @@ exports.action = function (req, res) {
     })
 }
 
+exports.getAllPresence = function (req,res) {
+    Dailypresence.findAll(function (err, dailypresence) {
+        if (err) res.send(err);
+        console.log('res', dailypresence);
+        res.send(dailypresence);
+    });
+}
+
 // exports.salary = function (req, res) {
 //     Dailypresence.salary(function (err, salary) {
 //         if (err) res.send(err)

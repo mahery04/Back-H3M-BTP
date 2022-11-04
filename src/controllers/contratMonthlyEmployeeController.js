@@ -14,7 +14,7 @@ exports.findById = function (req,res) {
         if(err) res.send(err);
         console.log(monthlycontrat);
         res.json ({
-            id: dailycontrat[0].id,
+            id: monthlycontrat[0].id,
             contrat_id: monthlycontrat[0].contrat_id,
             type_contrat: monthlycontrat[0].type_contrat,
             evaluation: monthlycontrat[0].evaluation,
@@ -50,7 +50,7 @@ exports.update = function (req,res) {
 }
 
 exports.delete = function (req, res) {
-    MonthlyContrat.delete(req.params.id, function (err, dailyemployee) {
+    MonthlyContrat.delete(req.params.id, function (err, monthlyemployee) {
         if (err) res.send(err);
         res.json({ error: false, message: 'Contrat successfully deleted' });
     });

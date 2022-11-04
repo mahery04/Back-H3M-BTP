@@ -8,6 +8,14 @@ exports.getMonth = function (req,res) {
     })
 }
 
+exports.getLastDate = function (req, res) {
+    Weekpresence.getLastDate(req.params.id, function(err, weekpresence) {
+        if (err) res.send(err)
+        console.log('res', weekpresence[0]);
+        res.send(weekpresence[0]);
+    })
+}
+
 exports.globalView = function (req, res) {
     const newWeekpresence = new Weekpresence(req.body)
     Weekpresence.globalView(newWeekpresence, function (err, weekpresence) {
@@ -82,6 +90,20 @@ exports.nbAbsence = function (req, res) {
     Weekpresence.nbAbsence(req.params.id, function (err, nb_absence) {
         if (err) res.send(err)
         res.send(nb_absence[0])
+    })
+}
+
+exports.setHalfday = function (req, res) {
+    Weekpresence.setHalfday(req.params.id, function (err, weekpresence) {
+        if (err) res.send(err);
+        res.json({ error: false, message: 'half days successfully updated' });
+    })
+}
+
+exports.nbHalfday = function (req, res) {
+    Weekpresence.nbHalfday(req.params.id, function (err, nb_half_day) {
+        if (err) res.send(err)
+        res.send(nb_half_day[0])
     })
 }
 

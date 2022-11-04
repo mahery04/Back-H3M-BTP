@@ -8,6 +8,14 @@ exports.getMonth = function (req,res) {
     })
 }
 
+exports.getLastDate = function (req, res) {
+    Monthlyweekpresence.getLastDate(req.params.id, function(err, monthlyweekpresence) {
+        if (err) res.send(err)
+        console.log('res', monthlyweekpresence[0]);
+        res.send(monthlyweekpresence[0]);
+    })
+}
+
 exports.globalView = function (req, res) {
     const newMonthlyeekpresence = new Monthlyweekpresence(req.body)
     Monthlyweekpresence.globalView(newMonthlyeekpresence, function (err, monthlyweekpresence) {

@@ -3,27 +3,13 @@ var connection = require('./../../config/db.config')
 var Monthlyweekpresence = function (monthlyweekpresence) {
     this.monthlyweekpresence_id = monthlyweekpresence.monthlyweekpresence_id
     this.month                  = monthlyweekpresence.month
-    this.first_date             = monthlyweekpresence.first_date
-    this.last_date              = monthlyweekpresence.last_date
+    this.start_date             = monthlyweekpresence.start_date
     this.nb_present             = monthlyweekpresence.nb_present
     this.nb_absent              = monthlyweekpresence.nb_absent
     this.total_advance          = monthlyweekpresence.total_advance
     this.total_salary           = monthlyweekpresence.total_salary
     this.validation             = monthlyweekpresence.validation
     this.monthlyemployee_id     = monthlyweekpresence.monthlyemployee_id
-}
-
-
-Monthlyweekpresence.globalView = function (month, result) {
-    connection.query('SELECT * FROM `monthlyweek_presence` mwp JOIN monthly_employee me ON mwp.`monthlyemployee_id`=me.`monthlyemployee_id` JOIN post p ON me.post_id=p.post_id WHERE mwp.`month`=?', month.month, function (err, res) {
-        if (err) {
-            console.log("error: ", err);
-            result(null, res);
-        }
-        else {
-            result(null, res);
-        }
-    })
 }
 
 Monthlyweekpresence.getMonth = function (result) {
@@ -39,6 +25,56 @@ Monthlyweekpresence.getMonth = function (result) {
     })
 }
 
+Monthlyweekpresence.getLastDate = function (id, result) {
+    connection.query('SELECT start_date FROM monthlyweek_presence WHERE monthlyemployee_id=? ORDER BY monthlyweekpresence_id DESC LIMIT 0,1', id, function (err, res) {
+        if (err) {
+            console.log(err);
+            result(null,err)
+        } 
+        else {
+            console.log(res);
+            result(null,res)
+        }
+    })
+}
+
+Monthlyweekpresence.globalView = function (month, result) {
+    connection.query('select *,group_concat(date separator " ") as full_date from monthly_presence mp JOIN monthly_employee me ON mp.`monthlyemployee_id`=me.monthlyemployee_id JOIN monthlyweek_presence mwp ON mwp.monthlyweekpresence_id=mp.monthlyweekpresence_id JOIN post p ON p.post_id=me.post_id WHERE mwp.month=? group by mp.monthlyweekpresence_id', month.month, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(null, res);
+        }
+        else {
+            result(null, res);
+        }
+    })
+}
+
+
+// Monthlyweekpresence.create = function (id, newMonthlyweekpresence, result) {
+//     newMonthlyweekpresence.validation = 'NON VALIDE'
+//     connection.query('INSERT INTO monthlyweek_presence SET ?', newMonthlyweekpresence, function (err, res) {
+//         if (err) {
+//             console.log("error: ", err);
+//             result(null, err)
+//         } else {
+//             console.log(res)
+//             result(null, res)
+//             connection.query(`SELECT * FROM monthlyweek_presence ORDER BY monthlyweekpresence_id DESC LIMIT 0,1`, function (err, last_id) {
+//                 connection.query('SELECT * FROM weeks', function (err, weeks) {
+//                     weeks.forEach(week => {
+//                         connection.query('SELECT * FROM days', function(err, days) {
+//                             days.forEach(day => {
+//                                 connection.query('INSERT INTO monthly_presence SET monthlyweekpresence_id=?,date=NULL,week_id=?,day_id=?,status=NULL,advance=NULL,presence_salary=NULL,monthlyemployee_id=?', [last_id[0].monthlyweekpresence_id, week.week_id, day.day_id, id])
+//                             })
+//                         })
+//                     });
+//                 })
+//             })
+//         }
+//     })
+// }
+
 Monthlyweekpresence.create = function (id, newMonthlyweekpresence, result) {
     newMonthlyweekpresence.validation = 'NON VALIDE'
     connection.query('INSERT INTO monthlyweek_presence SET ?', newMonthlyweekpresence, function (err, res) {
@@ -47,18 +83,7 @@ Monthlyweekpresence.create = function (id, newMonthlyweekpresence, result) {
             result(null, err)
         } else {
             console.log(res)
-            result(null, res)
-            connection.query(`SELECT * FROM monthlyweek_presence ORDER BY monthlyweekpresence_id DESC LIMIT 0,1`, function (err, last_id) {
-                connection.query('SELECT * FROM weeks', function (err, weeks) {
-                    weeks.forEach(week => {
-                        connection.query('SELECT * FROM days', function(err, days) {
-                            days.forEach(day => {
-                                connection.query('INSERT INTO monthly_presence SET monthlyweekpresence_id=?,date=NULL,week_id=?,day_id=?,status=NULL,advance=NULL,presence_salary=NULL,monthlyemployee_id=?', [last_id[0].monthlyweekpresence_id, week.week_id, day.day_id, id])
-                            })
-                        })
-                    });
-                })
-            })
+            result(null, res)            
         }
     })
 }
@@ -77,7 +102,7 @@ Monthlyweekpresence.update = function (id, result) {
 
 Monthlyweekpresence.getById = function (id, result) {
     connection.query('SELECT MAX(monthlyweekpresence_id)id FROM monthly_presence WHERE monthlyemployee_id=?', id, function (err, last_id) {
-        connection.query('SELECT monthlypresence_id, day_text, week_text, `status`, date, advance, presence_salary FROM monthly_presence mp JOIN days d ON d.day_id=mp.day_id JOIN weeks w ON w.week_id=mp.week_id WHERE mp.monthlyweekpresence_id=? AND mp.monthlyemployee_id=?', [last_id[0].id, id], function (err, res) {
+        connection.query('SELECT monthlypresence_id, `status`, DATE, advance, presence_salary FROM monthly_presence mp WHERE mp.monthlyweekpresence_id=? AND mp.monthlyemployee_id=?', [last_id[0].id, id], function (err, res) {
             if (err) {
                 console.log("error: ", err);
                 result(null, res);
@@ -151,7 +176,7 @@ Monthlyweekpresence.nbAbsence = function (id, result) {
 
 Monthlyweekpresence.salary = function (id, result) {
     connection.query('SELECT MAX(monthlyweekpresence_id)id FROM monthly_presence WHERE monthlyemployee_id=?', id, function (err, last_id) {
-        connection.query('SELECT SUM(presence_salary) AS total_salary FROM monthly_presence mp JOIN weeks w ON w.week_id=mp.week_id JOIN days d ON d.day_id=mp.`day_id` WHERE mp.`monthlyweekpresence_id`= ? AND mp.`monthlyemployee_id`= ?', [last_id[0].id, id], function (err, salary) {
+        connection.query('SELECT SUM(presence_salary) AS total_salary FROM monthly_presence mp WHERE mp.`monthlyweekpresence_id`= ? AND mp.`monthlyemployee_id`= ?', [last_id[0].id, id], function (err, salary) {
             connection.query(`UPDATE monthlyweek_presence SET total_salary = ${salary[0].total_salary} WHERE monthlyweekpresence_id=${last_id[0].id}`, function (err, res) {
                 if (err) {
                     console.log("error: ", err);
@@ -183,7 +208,7 @@ Monthlyweekpresence.getSalary = function (id, result) {
 
 Monthlyweekpresence.advance = function (id, result) {
     connection.query('SELECT MAX(monthlyweekpresence_id)id FROM monthly_presence WHERE monthlyemployee_id=?', id, function (err, last_id) {
-        connection.query('SELECT SUM(advance) AS total_advance FROM monthly_presence mp JOIN weeks w ON w.week_id=mp.week_id JOIN days d ON d.day_id=mp.`day_id` WHERE mp.`monthlyweekpresence_id`= ? AND mp.`monthlyemployee_id`= ?', [last_id[0].id, id], function (err, advance) {
+        connection.query('SELECT SUM(advance) AS total_advance FROM monthly_presence mp WHERE mp.`monthlyweekpresence_id`= ? AND mp.`monthlyemployee_id`= ?', [last_id[0].id, id], function (err, advance) {
             connection.query(`UPDATE monthlyweek_presence SET total_advance = ${advance[0].total_advance} WHERE monthlyweekpresence_id=${last_id[0].id}`, function (err, res) {
                 if (err) {
                     console.log("error: ", err);
