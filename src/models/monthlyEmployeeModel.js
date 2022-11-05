@@ -9,7 +9,8 @@ var Monthlyemployee = function (monthlyemployee) {
     this.address            = monthlyemployee.address;
     this.contact            = monthlyemployee.contact;
     this.group              = monthlyemployee.group;
-    this.post_id            = monthlyemployee.post_id;
+    this.post_occupe        = monthlyemployee.post_occupe;
+    this.salary            = monthlyemployee.salary;
     this.status             = monthlyemployee.status;
     this.code_chantier      = monthlyemployee.code_chantier;
     this.category           = monthlyemployee.category;
@@ -32,7 +33,7 @@ Monthlyemployee.create = function (newMonthlyemployee, result) {
 };
 
 Monthlyemployee.findById = function (id, result) {
-    connection.query("SELECT * FROM monthly_employee me JOIN post p ON me.`post_id`=p.`post_id` WHERE monthlyemployee_id = ? ", id, function (err, res) {             
+    connection.query("SELECT * FROM monthly_employee WHERE monthlyemployee_id = ? ", id, function (err, res) {             
         if(err) {
             console.log("error: ", err);
             result(null,res);
@@ -44,7 +45,7 @@ Monthlyemployee.findById = function (id, result) {
 };
 
 Monthlyemployee.findAll = function (result) {
-    connection.query("SELECT * FROM monthly_employee me JOIN post p ON me.`post_id`=p.`post_id`", function (err, res) {
+    connection.query("SELECT * FROM monthly_employee", function (err, res) {
         if (err) {
             console.log("Error while fetching employees: ", err);
             result(null, err);
@@ -57,7 +58,7 @@ Monthlyemployee.findAll = function (result) {
 };
 
 Monthlyemployee.update = function (id, monthlyemployee, result) {
-    connection.query("UPDATE monthly_employee SET matricule=?,firstname=?,lastname=?,cin=?,address=?,contact=?,`group`=?,post_id=?,`status`=?,code_chantier=?,category=?,hiring_date=?,ostie_num=?,cnaps_num=? WHERE monthlyemployee_id = ? ", [monthlyemployee.matricule, monthlyemployee.firstname, monthlyemployee.lastname, monthlyemployee.cin, monthlyemployee.address, monthlyemployee.contact, monthlyemployee.group, monthlyemployee.post_id, monthlyemployee.status, monthlyemployee.code_chantier, monthlyemployee.category, monthlyemployee.hiring_date, monthlyemployee.ostie_num, monthlyemployee.cnaps_num, id], function (err, res) {
+    connection.query("UPDATE monthly_employee SET matricule=?,firstname=?,lastname=?,cin=?,address=?,contact=?,`group`=?,post_occupe=?,salary=?,`status`=?,code_chantier=?,category=?,hiring_date=?,ostie_num=?,cnaps_num=? WHERE monthlyemployee_id = ? ", [monthlyemployee.matricule, monthlyemployee.firstname, monthlyemployee.lastname, monthlyemployee.cin, monthlyemployee.address, monthlyemployee.contact, monthlyemployee.group, monthlyemployee.post_occupe, monthlyemployee.salary ,monthlyemployee.status, monthlyemployee.code_chantier, monthlyemployee.category, monthlyemployee.hiring_date, monthlyemployee.ostie_num, monthlyemployee.cnaps_num, id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);

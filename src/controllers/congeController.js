@@ -47,9 +47,10 @@ exports.findById = function (req, res) {
         console.log(conge);
         res.json({
             conge_id: conge[0].conge_id,
-            employee: conge[0].employee,
+            monthlyemployee_id: conge[0].monthlyemployee_id,
             start_conge: moment(conge[0].start_conge).format('YYYY-MM-DD'),
             end_conge: moment(conge[0].end_conge).format('YYYY-MM-DD'),
+            number_days: conge[0].number_days
         });
     });
 };
