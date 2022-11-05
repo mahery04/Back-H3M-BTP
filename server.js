@@ -39,6 +39,7 @@ const cantineRoutes = require('./src/routes/cantineRoutes')
 const congeRoutes = require('./src/routes/congeRoutes')
 const contratDailyEmployeeRoutes = require('./src/routes/contratDailyEmployeeRoutes')
 const contratMonthlyEmployeeRoutes = require('./src/routes/contratMonthlyEmployeeRoutes')
+const serviceProviderRoutes = require('./src/routes/serviceProviderRoutes')
 
 
 app.use('/api/dailyemployee', dailyEmployeeRoutes)
@@ -59,7 +60,7 @@ app.use('/api/cantine', cantineRoutes)
 app.use('/api/conge', congeRoutes)
 app.use('/api/contratdailyemployee', contratDailyEmployeeRoutes)
 app.use('/api/contratmonthlyemployee', contratMonthlyEmployeeRoutes)
-
+app.use('/api/serviceprovider', serviceProviderRoutes)
 
 app.use(express.static(
   path.join(__dirname,"./client/build")));
