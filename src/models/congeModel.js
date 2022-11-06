@@ -49,7 +49,7 @@ Conge.create = function (newConge, result) {
                 }
             })
 
-            // console.log("NUMBER OF DAYS ", number);
+            console.log("NUMBER OF DAYS ", number);
         }
     })
 }
