@@ -14,21 +14,30 @@ var ServiceProvider = function (serviceprovider) {
 }
 
 ServiceProvider.create = function(newServiceProvider, result) {
-    connection.query(`SELECT DATEDIFF(?,?) as number from service_provider `,[newServiceProvider.end_contract,newServiceProvider.start_contract], function (err,number) {
+    // connection.query(`SELECT DATEDIFF(?,?) as number from service_provider `,[newServiceProvider.end_contract,newServiceProvider.start_contract], function (err,number) {
+    //     if (err) {
+    //         result(null,err)
+    //     } else {
+    //         connection.query("INSERT INTO service_provider set provider_id=?,start_contract=?,end_contract=?,number_days=?",[newServiceProvider.provider_id, newServiceProvider.start_contract,newServiceProvider.end_contract,number[0].number], function (err, res) {
+    //             if (err) {
+    //                 console.log("error: ", err);
+    //                 result(null, err)
+    //             } else {
+    //                 console.log(res);
+    //                 result(null, res)
+    //             }
+    //         })
+
+    //         console.log("NUMBER OF DAYS ", number);
+    //     }
+    // })
+    connection.query("INSERT INTO service_provider set ?", newServiceProvider,function(err,res) {
         if (err) {
+            console.log("error: ", err);
             result(null,err)
         } else {
-            connection.query("INSERT INTO service_provider set provider_id=?,start_contract=?,end_contract=?,number_days=?",[newServiceProvider.provider_id, newServiceProvider.start_contract,newServiceProvider.end_contract,number[0].number], function (err, res) {
-                if (err) {
-                    console.log("error: ", err);
-                    result(null, err)
-                } else {
-                    console.log(res);
-                    result(null, res)
-                }
-            })
-
-            // console.log("NUMBER OF DAYS ", number);
+            console.log(res);
+            result(null,res)
         }
     })
 }
