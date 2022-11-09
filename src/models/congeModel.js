@@ -35,7 +35,7 @@ Conge.findById = function (id,result) {
 }
 
 Conge.create = function (newConge, result) {
-    connection.query(`SELECT DATEDIFF(?,?) as number from conge `,[newConge.end_conge,newConge.start_conge], function (err,number) {
+    connection.query(`SELECT DATEDIFF(?,?) as number `,[newConge.end_conge,newConge.start_conge], function (err,number) {
         if (err) {
             result(null,err)
         } else {
