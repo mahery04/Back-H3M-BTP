@@ -8,9 +8,11 @@ router.get('/', monthlyPresenceController.findAll)
 
 router.post('/', monthlyPresenceController.create)
 
-router.get('/:id', monthlyPresenceController.findById);
+router.get('/:id', monthlyPresenceController.findById)
 
 router.put('/:id', monthlyPresenceController.update)
+
+router.put('/validation/:id', monthlyPresenceController.validation)
 
 router.delete('/:id', monthlyPresenceController.delete)
 

@@ -67,7 +67,7 @@ MonthlyPresence.update = function (id, presence, result) {
         if (err) {
             result(null,err)
         } else {
-            connection.query("UPDATE monthly_presence set monthlyemployee_id=?,absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=? WHERE monthlypresence_id=?",[presence.monthlypresence_id, presence.absence_reason, presence.start_date,presence.return_date,number[0].number - 1, presence.visa_rh, id], function (err, res) {
+            connection.query("UPDATE monthly_presence set absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=? WHERE monthlypresence_id=?",[presence.absence_reason, presence.start_date,presence.return_date,number[0].number - 1, presence.visa_rh, id], function (err, res) {
                 if (err) {
                     console.log("error: ", err);
                     result(null, err)
@@ -78,6 +78,18 @@ MonthlyPresence.update = function (id, presence, result) {
             })
 
             // console.log("NUMBER OF DAYS ", number);
+        }
+    })
+}
+
+MonthlyPresence.validation = function (id,result) {
+    connection.query("UPDATE monthly_presence SET approval_direction = 'VALIDE' WHERE monthlypresence_id=?", id, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err)
+        } else {
+            console.log(res);
+            result(null, res)
         }
     })
 }

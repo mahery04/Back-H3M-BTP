@@ -21,6 +21,14 @@ exports.create = function (req, res) {
     }
 };
 
+exports.validation = function (req, res) {
+    MonthlyPresence.validation(req.params.id, function (err, conge) {
+        if (err) res.send(err);
+        res.json({ error: false, message: "Validation changed successfully!" });
+    });
+};
+
+
 exports.update = function (req, res) {
     const newPresence = new MonthlyPresence(req.body);
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
