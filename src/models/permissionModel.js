@@ -34,17 +34,23 @@ Permission.create = function (newPermission, result) {
         if (err) {
             result(null, err)
         } else {
-            var newPermissionRequestHours = newPermission.permission_before_request.split(':')[0]
-            var newNumberTimePermissionHours = number[0].number.split(':')[0]
-            var newPermissionRequestMinutes = newPermission.permission_before_request.split(':')[1]
-            var newNumberTimePermissionMinutes = number[0].number.split(':')[1]
-            var newPermissionRequestSecondes = newPermission.permission_before_request.split(':')[2]
-            var newNumberTimePermissionSecondes = number[0].number.split(':')[2]
+            // var newPermissionRequestHours = newPermission.permission_before_request.split(':')[0]
+            // var newNumberTimePermissionHours = number[0].number.split(':')[0]
+            // var newPermissionRequestMinutes = newPermission.permission_before_request.split(':')[1]
+            // var newNumberTimePermissionMinutes = number[0].number.split(':')[1]
+            // var newPermissionRequestSecondes = newPermission.permission_before_request.split(':')[2]
+            // var newNumberTimePermissionSecondes = number[0].number.split(':')[2]
 
-            var newSolde = `${parseInt(newPermissionRequestHours) - parseInt(newNumberTimePermissionHours)}:${parseInt(newPermissionRequestMinutes) - parseInt(newNumberTimePermissionMinutes)}:${parseInt(newPermissionRequestSecondes) - parseInt(newNumberTimePermissionSecondes)}`
+            // var newSolde = `${parseInt(newPermissionRequestHours) - parseInt(newNumberTimePermissionHours)}:${parseInt(newPermissionRequestMinutes) - parseInt(newNumberTimePermissionMinutes)}:${parseInt(newPermissionRequestSecondes) - parseInt(newNumberTimePermissionSecondes)}`
+            connection.query(`SELECT TIMEDIFF(?,?) as solde`, [newPermission.permission_before_request, number[0].number], function (err, solde) {
+                if (err) {
+                    result(null,err)
+                } else {
+                    result(null,solde)
+                    console.log("NS ", solde[0].solde);
+                }
+            })
 
-
-            console.log("NS ", newSolde);
             // connection.query("INSERT INTO permission set monthlyemployee_id=?,permission_reason=?,start_time=?,return_time=?,number_time_permission=?,permission_before_request=?, new_solde_permission=?, visa_rh=?,approval_direction='NON VALIDE'", [newPermission.monthlyemployee_id, newPermission.permission_reason, newPermission.start_time, newPermission.return_time, number[0].number,newPermission.permission_before_request, newPermission.permission_before_request - newPermission.number_time_permission, newPermission.visa_rh], function (err, res) {
             //     if (err) {
             //         console.log("error: ", err);
