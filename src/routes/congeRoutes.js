@@ -12,6 +12,8 @@ router.get('/:id', congeController.findById);
 
 router.put('/:id', congeController.update)
 
+router.put('/validation/:id', congeController.validation)
+
 router.delete('/:id', congeController.delete)
 
 module.exports = router

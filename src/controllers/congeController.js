@@ -21,6 +21,13 @@ exports.create = function (req, res) {
     }
 };
 
+exports.validation = function (req, res) {
+    Conge.validation(req.params.id, function (err, conge) {
+        if (err) res.send(err);
+        res.json({ error: false, message: "Validation changed successfully!" });
+    });
+};
+
 exports.update = function (req, res) {
     const newConge = new Conge(req.body);
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
@@ -48,9 +55,14 @@ exports.findById = function (req, res) {
         res.json({
             conge_id: conge[0].conge_id,
             monthlyemployee_id: conge[0].monthlyemployee_id,
+            conge_motif: conge[0].conge_motif,
             start_conge: moment(conge[0].start_conge).format('YYYY-MM-DD'),
             end_conge: moment(conge[0].end_conge).format('YYYY-MM-DD'),
-            number_days: conge[0].number_days
+            number_days: conge[0].number_days,
+            conge_before_request: conge[0].conge_before_request,
+            new_solde_conge : conge[0].new_solde_conge,
+            visa_rh: conge[0].visa_rh,
+            approval_direction : conge[0].approval_direction
         });
     });
 };

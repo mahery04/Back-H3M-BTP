@@ -16,7 +16,7 @@ exports.create = function (req, res) {
     } else {
         MonthlyPresence.create(newPresence, function (err, presence) {
             if (err) res.send(err);
-            res.json({ error: false, message: "presence added successfully!" });
+            res.json({ error: false, message: "Presence added successfully!" });
         });
     }
 };

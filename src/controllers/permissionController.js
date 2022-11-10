@@ -54,7 +54,7 @@ exports.findById = function (req, res) {
         if (err) res.send(err);
         console.log("TEST CHECK ", presence);
         res.json({
-            permission_id: presence[0].Permission_id,
+            permission_id: presence[0].permission_id,
             monthlyemployee_id: presence[0].monthlyemployee_id,
             permission_reason: presence[0].permission_reason,
             start_time: presence[0].start_time,
