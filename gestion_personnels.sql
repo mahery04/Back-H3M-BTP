@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 07 nov. 2022 à 05:22
+-- Généré le : jeu. 10 nov. 2022 à 19:55
 -- Version du serveur : 5.7.36
 -- Version de PHP : 7.4.26
 
@@ -90,22 +90,24 @@ DROP TABLE IF EXISTS `conge`;
 CREATE TABLE IF NOT EXISTS `conge` (
   `conge_id` int(11) NOT NULL AUTO_INCREMENT,
   `monthlyemployee_id` int(11) NOT NULL,
+  `conge_motif` varchar(255) NOT NULL,
   `start_conge` date NOT NULL,
   `end_conge` date NOT NULL,
   `number_days` int(11) NOT NULL,
+  `conge_before_request` int(11) NOT NULL,
+  `new_solde_conge` int(11) NOT NULL,
+  `visa_rh` varchar(50) NOT NULL,
+  `approval_direction` varchar(50) NOT NULL,
   PRIMARY KEY (`conge_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `conge`
 --
 
-INSERT INTO `conge` (`conge_id`, `monthlyemployee_id`, `start_conge`, `end_conge`, `number_days`) VALUES
-(3, 2, '2022-11-04', '2022-11-29', 25),
-(4, 3, '2022-11-08', '2022-11-30', 22),
-(5, 2, '2022-11-01', '2022-11-30', 29),
-(6, 4, '2022-11-06', '2023-01-05', 60),
-(7, 1, '2022-11-05', '2022-11-12', 7);
+INSERT INTO `conge` (`conge_id`, `monthlyemployee_id`, `conge_motif`, `start_conge`, `end_conge`, `number_days`, `conge_before_request`, `new_solde_conge`, `visa_rh`, `approval_direction`) VALUES
+(19, 5, 'VAVAKA', '2022-11-17', '2022-11-24', 6, 2, -4, 'Accordé', 'VALIDE'),
+(20, 3, 'HYHY', '2022-11-16', '2022-11-23', 6, 25, 19, 'En attente', 'VALIDE');
 
 -- --------------------------------------------------------
 
@@ -207,7 +209,16 @@ CREATE TABLE IF NOT EXISTS `daily_presence` (
   `presence_salary` varchar(50) DEFAULT NULL,
   `dailyemployee_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`dailypresence_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `daily_presence`
+--
+
+INSERT INTO `daily_presence` (`dailypresence_id`, `weekpresence_id`, `date`, `status`, `presence_salary`, `dailyemployee_id`) VALUES
+(1, NULL, '2022-11-09', '1', '7000', 1),
+(2, 1, '2022-11-09', '1', '7000', 1),
+(3, 2, '2022-11-09', '0.5', '3500', 2);
 
 -- --------------------------------------------------------
 
@@ -303,14 +314,52 @@ INSERT INTO `monthly_employee` (`monthlyemployee_id`, `matricule`, `firstname`, 
 DROP TABLE IF EXISTS `monthly_presence`;
 CREATE TABLE IF NOT EXISTS `monthly_presence` (
   `monthlypresence_id` int(11) NOT NULL AUTO_INCREMENT,
-  `monthlyweekpresence_id` int(11) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `status` varchar(50) DEFAULT NULL,
-  `advance` varchar(50) DEFAULT NULL,
-  `presence_salary` varchar(50) DEFAULT NULL,
   `monthlyemployee_id` int(11) DEFAULT NULL,
+  `absence_reason` varchar(255) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `return_date` date DEFAULT NULL,
+  `number_days_absence` int(11) DEFAULT NULL,
+  `visa_rh` varchar(50) DEFAULT NULL,
+  `approval_direction` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`monthlypresence_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `monthly_presence`
+--
+
+INSERT INTO `monthly_presence` (`monthlypresence_id`, `monthlyemployee_id`, `absence_reason`, `start_date`, `return_date`, `number_days_absence`, `visa_rh`, `approval_direction`) VALUES
+(10, 3, 'MARARY KIBO', '2022-11-20', '2022-11-30', 9, 'Accordé', 'VALIDE'),
+(11, 5, 'TERAKA', '2022-11-10', '2022-11-17', 6, 'Accordé', 'VALIDE'),
+(12, 5, 'TERABAO', '2022-11-11', '2022-11-21', 9, 'Accordé', 'NON VALIDE');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `permission`
+--
+
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE IF NOT EXISTS `permission` (
+  `permission_id` int(11) NOT NULL AUTO_INCREMENT,
+  `monthlyemployee_id` int(11) NOT NULL,
+  `permission_reason` varchar(255) NOT NULL,
+  `start_time` time NOT NULL,
+  `return_time` time NOT NULL,
+  `number_time_permission` time DEFAULT NULL,
+  `permission_before_request` time DEFAULT NULL,
+  `new_solde_permission` time DEFAULT NULL,
+  `visa_rh` varchar(50) DEFAULT NULL,
+  `approval_direction` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`permission_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `permission`
+--
+
+INSERT INTO `permission` (`permission_id`, `monthlyemployee_id`, `permission_reason`, `start_time`, `return_time`, `number_time_permission`, `permission_before_request`, `new_solde_permission`, `visa_rh`, `approval_direction`) VALUES
+(14, 5, 'HILALAO JEUX', '10:30:00', '02:00:00', '-08:30:00', '02:00:00', '10:30:00', 'Accordé', 'NON VALIDE');
 
 -- --------------------------------------------------------
 
@@ -411,14 +460,16 @@ CREATE TABLE IF NOT EXISTS `service_provider` (
   `post_occupe` varchar(255) DEFAULT NULL,
   `salary` int(11) DEFAULT NULL,
   PRIMARY KEY (`provider_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `service_provider`
 --
 
 INSERT INTO `service_provider` (`provider_id`, `firstname`, `lastname`, `cin`, `address`, `contact`, `start_contract`, `end_contract`, `number_days`, `post_occupe`, `salary`) VALUES
-(13, 'livaw', 'livafg', '999999999999', 'bira', '0345897845', '2022-11-20', '2022-11-23', NULL, 'dertyuhse', 700000);
+(13, 'livaw', 'livafg', '999999999999', 'bira', '0345897845', '2022-11-20', '2022-11-23', NULL, 'dertyuhse', 700000),
+(15, 'livaT', 'livafgQQ', '000000000000', 'biraO', '0345897845', '2022-11-20', '2022-11-23', NULL, 'dertyuhseGG', 7000000),
+(14, 'BEN', 'TEN', '123456789456', 'TANA', '0341589658', '2022-11-07', '2022-11-14', NULL, 'BTP', 1000);
 
 -- --------------------------------------------------------
 
@@ -546,7 +597,15 @@ CREATE TABLE IF NOT EXISTS `week_presence` (
   `dailyemployee_id` int(11) DEFAULT NULL,
   `validation` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`weekpresence_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `week_presence`
+--
+
+INSERT INTO `week_presence` (`weekpresence_id`, `month`, `start_date`, `nb_present`, `nb_absent`, `nb_half_day`, `total_salary`, `dailyemployee_id`, `validation`) VALUES
+(1, 'November 2022', '2022-11-09', 1, 0, 0, 7000, 1, 'NON VALIDE'),
+(2, 'November 2022', '2022-11-09', 0, 0, 1, 3500, 2, 'NON VALIDE');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
