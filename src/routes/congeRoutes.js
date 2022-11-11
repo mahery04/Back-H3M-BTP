@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const congeController = require('../controllers/congeController')
 
+router.put('/lastday', congeController.updateLastDay)
+
 router.get('/fullemployee', congeController.getEmployee)
 
 router.get('/', congeController.findAll)

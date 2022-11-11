@@ -1,6 +1,14 @@
 const Conge = require('../models/congeModel')
 const moment = require('moment')
 
+exports.updateLastDay = function (req, res) {
+    Conge.updateLastDay(function (err, conge) {
+        if (err) res.send(err);
+        res.json({ error: false, message: "Conge added successfully!" });
+        // console.log(conge)
+    });
+};
+
 exports.getEmployee = function (req, res) {
     Conge.getEmployee(function (err, conge) {
         if (err) res.send(err);

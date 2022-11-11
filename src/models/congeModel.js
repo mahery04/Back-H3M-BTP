@@ -67,19 +67,30 @@ Conge.update = function (id, conge, result) {
             result(null,err)
         } else {
             var numberRestConge = parseInt(conge.conge_before_request) - (number[0].number-1)
-            connection.query("UPDATE conge set conge_motif=?,start_conge=?,end_conge=?,number_days=?,conge_before_request=?,new_solde_conge=?,visa_rh=?,approval_direction='NON VALIDE' WHERE conge_id=?",[conge.monthlyemployee_id, conge.conge_motif, conge.start_conge,conge.end_conge,number[0].number-1, parseInt(conge.conge_before_request), numberRestConge, conge.visa_rh,conge.approval_direction,id], function (err, res) {
-                if (err) {
-                    console.log("error: ", err);
-                    result(null, err)
-                } else {
-                    console.log(res);
-                    result(null, res)
-                }
+            connection.query("UPDATE conge set conge_motif=?,start_conge=?,end_conge=?,number_days=?,conge_before_request=?,new_solde_conge=?,visa_rh=?,approval_direction='NON VALIDE' WHERE conge_id=?",[ conge.conge_motif, conge.start_conge,conge.end_conge,number[0].number-1, parseInt(conge.conge_before_request), numberRestConge, conge.visa_rh,id], function (err, res) {
+                console.log(res);
+                result(null, res)
             })
-
             // console.log("NUMBER OF DAYS ", number[0].number-1);
             // console.log("SUBSTRACT ", newConge.conge_before_request - (number[0].number-1));
         }
+    })
+}
+
+Conge.updateLastDay = function (result) {
+    connection.query('SELECT conge_id, new_solde_conge FROM conge', function (err, newSoldes) {
+        if (err) {
+            console.log("error: ", err);
+        } else {
+            // console.log(newSoldes)
+            newSoldes.forEach(newSolde => {
+                connection.query(`UPDATE conge SET new_solde_conge=${parseFloat(newSolde.new_solde_conge)+2.5} WHERE conge_id=${newSolde.conge_id}`, function (err, res) {                    
+                    console.log(res);
+                    // result(null, res)               
+                })
+            });
+        }
+        
     })
 }
 
