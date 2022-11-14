@@ -41,6 +41,7 @@ const contratDailyEmployeeRoutes = require('./src/routes/contratDailyEmployeeRou
 const contratMonthlyEmployeeRoutes = require('./src/routes/contratMonthlyEmployeeRoutes')
 const serviceProviderRoutes = require('./src/routes/serviceProviderRoutes')
 const permissionRoutes = require('./src/routes/permissionRoutes')
+const monthlySalaryRoutes = require('./src/routes/monthlySalaryRoutes')
 
 
 app.use('/api/dailyemployee', dailyEmployeeRoutes)
@@ -63,6 +64,8 @@ app.use('/api/contratdailyemployee', contratDailyEmployeeRoutes)
 app.use('/api/contratmonthlyemployee', contratMonthlyEmployeeRoutes)
 app.use('/api/serviceprovider', serviceProviderRoutes)
 app.use('/api/permission', permissionRoutes)
+app.use('/api/salarymonthly', monthlySalaryRoutes)
+
 
 app.use(express.static(
   path.join(__dirname,"./client/build")));

@@ -61,7 +61,7 @@ Permission.getEmployee = function (result) {
 // }
 
 Permission.create = function (newPermission, result) {
-    connection.query("INSERT INTO permission set monthlyemployee_id=?,permission_reason=?,start_hour_time=?,start_minute_time=?,return_hour_time=?,return_minute_time=?,number_time_permission=?,permission_hour_before_request=?, permission_minute_before_request=?, new_solde_permission=?, visa_rh=?,approval_direction='NON VALIDE'", [newPermission.monthlyemployee_id, newPermission.permission_reason, newPermission.start_hour_time, newPermission.start_minute_time, newPermission.return_hour_time, newPermission.return_minute_time, `${newPermission.return_hour_time-newPermission.start_hour_time} ${newPermission.return_minute_time-(-newPermission.start_minute_time)}`,newPermission.permission_hour_before_request, newPermission.permission_minute_before_request,  `${(newPermission.permission_hour_before_request - (newPermission.return_hour_time-newPermission.start_hour_time))} ${(newPermission.permission_minute_before_request - (newPermission.return_minute_time-newPermission.start_minute_time))}`        , newPermission.visa_rh], function (err, res) {
+    connection.query("INSERT INTO permission set monthlyemployee_id=?,permission_reason=?,start_hour_time=?,start_minute_time=?,return_hour_time=?,return_minute_time=?,number_time_permission=?,permission_hour_before_request=?, permission_minute_before_request=?, new_solde_permission=?, visa_rh=?,approval_direction='NON VALIDE'", [newPermission.monthlyemployee_id, newPermission.permission_reason, newPermission.start_hour_time, newPermission.start_minute_time, newPermission.return_hour_time, newPermission.return_minute_time, `${newPermission.return_hour_time-newPermission.start_hour_time} ${newPermission.return_minute_time-newPermission.start_minute_time}`,newPermission.permission_hour_before_request, newPermission.permission_minute_before_request,  `${(newPermission.permission_hour_before_request - (newPermission.return_hour_time-newPermission.start_hour_time))} ${(newPermission.permission_minute_before_request - (newPermission.return_minute_time-newPermission.start_minute_time))}`, newPermission.visa_rh], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err)
@@ -114,14 +114,14 @@ Permission.findById = function (id, result) {
 // }
 
 Permission.update = function (id, permission, result) {
-    connection.query("UPDATE permission set monthlyemployee_id=?,permission_reason=?,start_hour_time=?,start_minute_time=?,return_hour_time=?,return_minute_time=?,number_time_permission=?,permission_hour_before_request=?, permission_minute_before_request=?, new_solde_permission=?, visa_rh=?,approval_direction='NON VALIDE'", [permission.permission_reason, permission.start_hour_time, permission.start_minute_time, permission.return_hour_time, permission.return_minute_time, `${permission.return_hour_time-permission.start_hour_time} ${permission.return_minute_time-permission.start_minute_time}`,permission.permission_hour_before_request, permission.permission_minute_before_request, permission.new_solde_permission, permission.visa_rh,id], function (err, res) {
+    connection.query("UPDATE permission set permission_reason=?,start_hour_time=?,start_minute_time=?,return_hour_time=?,return_minute_time=?,number_time_permission=?,permission_hour_before_request=?, permission_minute_before_request=?, new_solde_permission=?, visa_rh=?,approval_direction='NON VALIDE'", [permission.permission_reason, permission.start_hour_time, permission.start_minute_time, permission.return_hour_time, permission.return_minute_time, `${permission.return_hour_time-permission.start_hour_time} ${permission.return_minute_time-permission.start_minute_time}`,permission.permission_hour_before_request, permission.permission_minute_before_request, permission.new_solde_permission, permission.visa_rh,id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err)
         } else {
             console.log(res);
             // result(null, res)
-            if (parseInt(number[0].number.split(':')[0]) > 2) {
+            if (parseInt(`${permission.return_hour_time-permission.start_hour_time} ${permission.return_minute_time-permission.start_minute_time}`.split(':')[0]) > 2) {
                 connection.query(`INSERT INTO conge SET monthlyemployee_id=${permission.monthlyemployee_id},conge_motif='Exces de permission',visa_rh='En attente',approval_direction='NON VALIDE'`)
             }
         }

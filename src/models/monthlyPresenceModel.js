@@ -1,8 +1,5 @@
 var connection = require('./../../config/db.config')
 
-var today = new Date();
-var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-
 var MonthlyPresence = function (monthlypresence) {
     this.monthlypresence_id = monthlypresence.monthlypresence_id
     this.absence_reason = monthlypresence.absence_reason

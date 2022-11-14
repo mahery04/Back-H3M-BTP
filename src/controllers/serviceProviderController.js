@@ -1,4 +1,5 @@
 const ServiceProvider = require('../models/serviceProviderModel')
+const moment = require('moment')
 
 exports.findAll = function (req, res) {
     ServiceProvider.findAll(function (err, provider) {
@@ -19,8 +20,9 @@ exports.findById = function (req, res) {
             cin:                provider[0].cin,
             address:            provider[0].address,
             contact:            provider[0].contact,
-            start_contract:     provider[0].start_contract,
-            end_contract:       provider[0].end_contract,
+            start_contract:     moment(provider[0].start_contract).format('YYYY-MM-DD'),
+            end_contract:       moment(provider[0].end_contract).format('YYYY-MM-DD'),
+            number_days:        provider[0].number_days,
             post_occupe:        provider[0].post_occupe,
             salary:             provider[0].salary,
         });
