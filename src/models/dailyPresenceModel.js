@@ -9,6 +9,7 @@ var DailyPresence = function (dailypresence) {
     this.date               = dailypresence.date
     this.status             = dailypresence.status
     this.presence_salary    = dailypresence.presence_salary
+    this.par = dailypresence.par
     this.dailyemployee_id   = dailypresence.dailyemployee_id
 }
 
@@ -24,7 +25,7 @@ DailyPresence.action = function(id, dailypresence ,result) {
                 //         result(null, res);
                 //     }
                 // })
-                connection.query(`INSERT INTO daily_presence SET weekpresence_id=${last_id[0].id},date="${dailypresence.date}",status=${dailypresence.status},presence_salary=${salary[0].salary},dailyemployee_id=${id}`, function (err, res) {
+                connection.query(`INSERT INTO daily_presence SET weekpresence_id=${last_id[0].id},date="${dailypresence.date}",status=${dailypresence.status},presence_salary=${salary[0].salary},par="${dailypresence.par}",dailyemployee_id=${id}`, function (err, res) {
                     if (err) {
                         console.log("error: ", err);
                         result(null, err);
@@ -42,7 +43,7 @@ DailyPresence.action = function(id, dailypresence ,result) {
                 //         result(null, res);
                 //     }
                 // })
-                connection.query(`INSERT INTO daily_presence SET weekpresence_id=${last_id[0].id},date="${dailypresence.date}",status=${dailypresence.status},presence_salary=${newSalary},dailyemployee_id=${id}`, function (err, res) {
+                connection.query(`INSERT INTO daily_presence SET weekpresence_id=${last_id[0].id},date="${dailypresence.date}",status=${dailypresence.status},presence_salary=${newSalary},par="${dailypresence.par}",dailyemployee_id=${id}`, function (err, res) {
                     if (err) {
                         console.log("error: ", err);
                         result(null, err);
@@ -59,7 +60,7 @@ DailyPresence.action = function(id, dailypresence ,result) {
                 //         result(null, res);
                 //     }
                 // })
-                connection.query(`INSERT INTO daily_presence SET weekpresence_id=${last_id[0].id},date="${dailypresence.date}",status=${dailypresence.status},presence_salary=0,dailyemployee_id=${id}`, function (err, res) {
+                connection.query(`INSERT INTO daily_presence SET weekpresence_id=${last_id[0].id},date="${dailypresence.date}",status=${dailypresence.status},presence_salary=0,par="${dailypresence.par}",dailyemployee_id=${id}`, function (err, res) {
                     if (err) {
                         console.log("error: ", err);
                         result(null, err);

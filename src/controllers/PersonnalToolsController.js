@@ -21,9 +21,8 @@ exports.findById = function (req, res) {
             vendor:                 personnaltools[0].vendor,
             invoice_number:         personnaltools[0].invoice_number,
             article_name:           personnaltools[0].article_name,
-            assignation_place:      personnaltools[0].assignation_place,
+            // assignation_place:      personnaltools[0].assignation_place,
             statue:                 personnaltools[0].statue,
-            historical:             personnaltools[0].historical,
             material_number:        personnaltools[0].material_number,
         })
     });

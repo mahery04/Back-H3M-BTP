@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 10 nov. 2022 à 19:55
+-- Généré le : jeu. 01 déc. 2022 à 12:42
 -- Version du serveur : 5.7.36
 -- Version de PHP : 7.4.26
 
@@ -39,14 +39,7 @@ CREATE TABLE IF NOT EXISTS `cantine` (
   `total_budget_voamaina` int(11) DEFAULT NULL,
   `total_depense` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_cantine`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `cantine`
---
-
-INSERT INTO `cantine` (`id_cantine`, `month`, `date`, `nb_people`, `total_kapoka_vary`, `total_budget_vary`, `total_kapoka_voamaina`, `total_budget_voamaina`, `total_depense`) VALUES
-(1, 'November 2022', '2022-11-01', 5, 2.5, 250, 2.5, 250, 500);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -69,16 +62,7 @@ CREATE TABLE IF NOT EXISTS `common_tools` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`tool_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `common_tools`
---
-
-INSERT INTO `common_tools` (`tool_id`, `purchase_date`, `vendor`, `num_fact`, `identification_number`, `article_name`, `statue`, `historical`, `material_number`, `tooling_id`, `created_at`, `updated_at`) VALUES
-(2, '2022-10-28', '', '', 'M006', 'CASQUE', 'Nouveau', '', 10, NULL, '2022-10-28 07:47:25', NULL),
-(3, '2022-10-28', '2000', '001', 'drt', 'ZAQS', 'Nouveau', '', 4, NULL, '2022-10-28 11:49:42', NULL),
-(4, '2022-10-28', 'FGFGFGFG', 'GFGF', 'GFFGGF', 'FGGFFG', 'Nouveau', '', 50, NULL, '2022-10-28 11:49:42', NULL);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -91,23 +75,16 @@ CREATE TABLE IF NOT EXISTS `conge` (
   `conge_id` int(11) NOT NULL AUTO_INCREMENT,
   `monthlyemployee_id` int(11) NOT NULL,
   `conge_motif` varchar(255) NOT NULL,
-  `start_conge` date NOT NULL,
-  `end_conge` date NOT NULL,
-  `number_days` int(11) NOT NULL,
-  `conge_before_request` int(11) NOT NULL,
-  `new_solde_conge` int(11) NOT NULL,
-  `visa_rh` varchar(50) NOT NULL,
-  `approval_direction` varchar(50) NOT NULL,
+  `start_conge` date DEFAULT NULL,
+  `end_conge` date DEFAULT NULL,
+  `number_days` float DEFAULT NULL,
+  `conge_before_request` float DEFAULT NULL,
+  `new_solde_conge` float DEFAULT NULL,
+  `visa_rh` varchar(50) DEFAULT NULL,
+  `approval_direction` varchar(50) DEFAULT NULL,
+  `lastDay` date DEFAULT NULL,
   PRIMARY KEY (`conge_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `conge`
---
-
-INSERT INTO `conge` (`conge_id`, `monthlyemployee_id`, `conge_motif`, `start_conge`, `end_conge`, `number_days`, `conge_before_request`, `new_solde_conge`, `visa_rh`, `approval_direction`) VALUES
-(19, 5, 'VAVAKA', '2022-11-17', '2022-11-24', 6, 2, -4, 'Accordé', 'VALIDE'),
-(20, 3, 'HYHY', '2022-11-16', '2022-11-23', 6, 25, 19, 'En attente', 'VALIDE');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -125,14 +102,7 @@ CREATE TABLE IF NOT EXISTS `contrat` (
   `start_motif` varchar(255) NOT NULL,
   `sanction` varchar(255) NOT NULL,
   PRIMARY KEY (`contrat_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `contrat`
---
-
-INSERT INTO `contrat` (`contrat_id`, `id`, `type_contrat`, `evaluation`, `start_date`, `start_motif`, `sanction`) VALUES
-(13, 1, 'INTERIMAIRE', 'ESSAIE', NULL, '', '');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -150,15 +120,7 @@ CREATE TABLE IF NOT EXISTS `contrat_monthly` (
   `start_motif` varchar(255) NOT NULL,
   `sanction` varchar(255) NOT NULL,
   PRIMARY KEY (`contrat_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `contrat_monthly`
---
-
-INSERT INTO `contrat_monthly` (`contrat_id`, `id`, `type_contrat`, `evaluation`, `start_date`, `start_motif`, `sanction`) VALUES
-(2, 1, 'INTERIMAIRE', 'ESSAIE', NULL, '', ''),
-(4, 1, 'APPRENTISSAGE', 'ESSAIE NON CONCLUANT', NULL, '', '');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -182,17 +144,9 @@ CREATE TABLE IF NOT EXISTS `daily_employee` (
   `hiring_date` date DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   `remarque` text,
+  `par` varchar(50) NOT NULL,
   PRIMARY KEY (`dailyemployee_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `daily_employee`
---
-
-INSERT INTO `daily_employee` (`dailyemployee_id`, `matricule`, `firstname`, `lastname`, `cin`, `address`, `contact`, `post_id`, `code_chantier`, `group`, `category`, `hiring_date`, `status`, `remarque`) VALUES
-(1, '1500', 'AAA', 'VVVVV', '555 555 555 555', 'TR', '222 22 222 22', 1, 'CD', 'BTP', 'SD', NULL, 'Actif', ''),
-(2, 'ddd', 'ddddd', 'ddddd', '000 000 000 000', 'dddddd', '222 22 222 22', 1, 'dddd', 'BTP', 'ddddd', NULL, 'Actif', ''),
-(3, '588', 'DERT', 'DSZA', NULL, '', '', 2, '', 'SIP', '', NULL, 'Actif', '');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -207,18 +161,10 @@ CREATE TABLE IF NOT EXISTS `daily_presence` (
   `date` date DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   `presence_salary` varchar(50) DEFAULT NULL,
+  `par` varchar(50) DEFAULT NULL,
   `dailyemployee_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`dailypresence_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `daily_presence`
---
-
-INSERT INTO `daily_presence` (`dailypresence_id`, `weekpresence_id`, `date`, `status`, `presence_salary`, `dailyemployee_id`) VALUES
-(1, NULL, '2022-11-09', '1', '7000', 1),
-(2, 1, '2022-11-09', '1', '7000', 1),
-(3, 2, '2022-11-09', '0.5', '3500', 2);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -245,6 +191,23 @@ INSERT INTO `days` (`day_id`, `day_text`) VALUES
 (5, 'Vendredi'),
 (6, 'Samedi'),
 (7, 'Dimanche');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `history_tool`
+--
+
+DROP TABLE IF EXISTS `history_tool`;
+CREATE TABLE IF NOT EXISTS `history_tool` (
+  `history_tool_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
+  `date_transfert` date NOT NULL,
+  `lieu_transfert` varchar(255) NOT NULL,
+  `etat` varchar(255) NOT NULL,
+  `observation` varchar(255) NOT NULL,
+  PRIMARY KEY (`history_tool_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -291,19 +254,19 @@ CREATE TABLE IF NOT EXISTS `monthly_employee` (
   `motif` text,
   `ostie_num` varchar(50) DEFAULT NULL,
   `cnaps_num` varchar(50) DEFAULT NULL,
+  `par` varchar(50) NOT NULL,
   PRIMARY KEY (`monthlyemployee_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `monthly_employee`
 --
 
-INSERT INTO `monthly_employee` (`monthlyemployee_id`, `matricule`, `firstname`, `lastname`, `cin`, `address`, `contact`, `group`, `post_occupe`, `salary`, `status`, `code_chantier`, `category`, `hiring_date`, `motif`, `ostie_num`, `cnaps_num`) VALUES
-(1, '011', 'AAAAA', 'EEEEEE', '444 444 444 444', 'ERTY', '444 44 444 44', 'BTP', '', 0, 'Actif', 'DF', 'QS', NULL, NULL, '11', '12'),
-(2, '0010', 'AZERTY', 'AZERTY', NULL, '', '', 'BTP', 'SECRETAIRE', 500000, 'Actif', '', '', NULL, NULL, '', ''),
-(3, '001', 'AZERTY', 'ZERTYUIO', NULL, '', '', 'BTP', 'SECRETAIRE', 250000, 'Actif', '', '', NULL, NULL, '', ''),
-(4, '025', 'JOYEUX', 'NOEL', NULL, '', '', 'BTP', 'CHAUFFEUR', 200000, 'Actif', '', '', NULL, NULL, '', ''),
-(5, '001', 'RANDRIA', 'NAIVO', NULL, '', '', 'BTP', 'COMMERCIALE', 700000, 'Actif', '', '', NULL, NULL, '', '');
+INSERT INTO `monthly_employee` (`monthlyemployee_id`, `matricule`, `firstname`, `lastname`, `cin`, `address`, `contact`, `group`, `post_occupe`, `salary`, `status`, `code_chantier`, `category`, `hiring_date`, `motif`, `ostie_num`, `cnaps_num`, `par`) VALUES
+(1, '001-H/AD', 'ANDRY NOTAHIANA', 'MIARIVOLA', NULL, '', '', 'BTP', 'COMMERCIAL', 700000, 'Actif', '', 'HHHG', NULL, NULL, '', '', 'Directeur général le 24-11-2022'),
+(2, '003-H/AD', 'ANDRIATSIFALAMBOARIVELO', 'TOJO FANIRY', NULL, '', '', 'Parapharmaceutique', 'INFORMATICIEN', 800000, 'Actif', '', '', '2022-10-01 00:00:00', NULL, '', '', 'Directeur général le 24-11-2022'),
+(3, '004-H/AD', 'RAMILISON', 'HAJASOA', NULL, '', '', 'Parapharmaceutique', 'COMPTABLE', 800000, 'Actif', '', '', '2022-10-01 00:00:00', NULL, '', '', 'Directeur général le 24-11-2022'),
+(4, '005-H/AD', 'RAMILISON', 'Andrianiaina', NULL, '', '', 'Parapharmaceutique', 'CONTROLEUR', 700000, 'Actif', '', '', '2022-10-01 00:00:00', NULL, '', '', 'Directeur général le 24-11-2022');
 
 -- --------------------------------------------------------
 
@@ -318,20 +281,54 @@ CREATE TABLE IF NOT EXISTS `monthly_presence` (
   `absence_reason` varchar(255) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
-  `number_days_absence` int(11) DEFAULT NULL,
+  `number_days_absence` float DEFAULT NULL,
   `visa_rh` varchar(50) DEFAULT NULL,
   `approval_direction` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`monthlypresence_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `monthly_presence`
 --
 
 INSERT INTO `monthly_presence` (`monthlypresence_id`, `monthlyemployee_id`, `absence_reason`, `start_date`, `return_date`, `number_days_absence`, `visa_rh`, `approval_direction`) VALUES
-(10, 3, 'MARARY KIBO', '2022-11-20', '2022-11-30', 9, 'Accordé', 'VALIDE'),
-(11, 5, 'TERAKA', '2022-11-10', '2022-11-17', 6, 'Accordé', 'VALIDE'),
-(12, 5, 'TERABAO', '2022-11-11', '2022-11-21', 9, 'Accordé', 'NON VALIDE');
+(0, NULL, NULL, NULL, NULL, 0, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `monthly_salary`
+--
+
+DROP TABLE IF EXISTS `monthly_salary`;
+CREATE TABLE IF NOT EXISTS `monthly_salary` (
+  `monthlysalary_id` int(11) NOT NULL AUTO_INCREMENT,
+  `month` varchar(50) NOT NULL,
+  `monthlypresence_id` int(11) NOT NULL,
+  `monthlyemployee_id` int(11) NOT NULL,
+  `number_work` float NOT NULL,
+  `montant_supplementaire` int(11) NOT NULL,
+  `absence` float NOT NULL,
+  `prime` int(11) NOT NULL,
+  `conge` int(11) NOT NULL,
+  `indeminite_transport` int(11) NOT NULL,
+  `autres_indeminités` int(11) NOT NULL,
+  `salary_brut` float NOT NULL,
+  `ostie_part_employee` float NOT NULL,
+  `cnaps_part_employee` float NOT NULL,
+  `montant_heure_imposable` float NOT NULL,
+  `irsa` float NOT NULL,
+  `montant_non_imposable` int(11) NOT NULL,
+  `avance_quinzaine` int(11) NOT NULL,
+  `avance_speciale` int(11) NOT NULL,
+  `enfant_charge` int(11) NOT NULL,
+  `autres_deductions` int(11) NOT NULL,
+  `salary_net` float NOT NULL,
+  `ostie_part_patronale` float NOT NULL,
+  `cnaps_part_patronale` float NOT NULL,
+  `fmpf` float NOT NULL,
+  PRIMARY KEY (`monthlysalary_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -343,23 +340,21 @@ DROP TABLE IF EXISTS `permission`;
 CREATE TABLE IF NOT EXISTS `permission` (
   `permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `monthlyemployee_id` int(11) NOT NULL,
+  `date_permission` date NOT NULL,
   `permission_reason` varchar(255) NOT NULL,
-  `start_time` time NOT NULL,
-  `return_time` time NOT NULL,
-  `number_time_permission` time DEFAULT NULL,
-  `permission_before_request` time DEFAULT NULL,
-  `new_solde_permission` time DEFAULT NULL,
+  `start_hour_time` varchar(10) NOT NULL,
+  `start_minute_time` varchar(10) NOT NULL,
+  `return_hour_time` varchar(10) NOT NULL,
+  `return_minute_time` varchar(10) NOT NULL,
+  `number_time_permission` varchar(10) DEFAULT NULL,
+  `permission_hour_before_request` varchar(10) DEFAULT NULL,
+  `permission_minute_before_request` varchar(10) NOT NULL,
+  `new_solde_permission` varchar(10) DEFAULT NULL,
   `visa_rh` varchar(50) DEFAULT NULL,
   `approval_direction` varchar(50) DEFAULT NULL,
+  `par` varchar(50) NOT NULL,
   PRIMARY KEY (`permission_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `permission`
---
-
-INSERT INTO `permission` (`permission_id`, `monthlyemployee_id`, `permission_reason`, `start_time`, `return_time`, `number_time_permission`, `permission_before_request`, `new_solde_permission`, `visa_rh`, `approval_direction`) VALUES
-(14, 5, 'HILALAO JEUX', '10:30:00', '02:00:00', '-08:30:00', '02:00:00', '10:30:00', 'Accordé', 'NON VALIDE');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -376,21 +371,13 @@ CREATE TABLE IF NOT EXISTS `personnal_tools` (
   `invoice_number` varchar(255) DEFAULT NULL,
   `article_name` varchar(50) DEFAULT NULL,
   `statue` varchar(50) DEFAULT NULL,
-  `historical` text,
   `material_number` int(11) DEFAULT NULL,
   `responsable` varchar(50) DEFAULT NULL,
   `tooling_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`tool_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `personnal_tools`
---
-
-INSERT INTO `personnal_tools` (`tool_id`, `purchase_date`, `identification_number`, `vendor`, `invoice_number`, `article_name`, `statue`, `historical`, `material_number`, `responsable`, `tooling_id`, `created_at`, `updated_at`) VALUES
-(1, '2022-11-05', 'LP001', '', '', 'CASQUE', 'Nouveau', '', 9, NULL, NULL, '2022-11-05 10:20:57', NULL);
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -429,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `role`
@@ -437,8 +424,26 @@ CREATE TABLE IF NOT EXISTS `role` (
 
 INSERT INTO `role` (`role_id`, `role_name`) VALUES
 (1, 'Directeur général'),
-(2, 'Responsable informatique'),
-(3, 'Commercial');
+(2, 'Dep_Info'),
+(3, 'Manampisoa'),
+(5, 'Voaratiana');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `salary_prestataire`
+--
+
+DROP TABLE IF EXISTS `salary_prestataire`;
+CREATE TABLE IF NOT EXISTS `salary_prestataire` (
+  `salary_provider_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
+  `date_paiement` date NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `salary` int(11) NOT NULL,
+  PRIMARY KEY (`salary_provider_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -460,16 +465,22 @@ CREATE TABLE IF NOT EXISTS `service_provider` (
   `post_occupe` varchar(255) DEFAULT NULL,
   `salary` int(11) DEFAULT NULL,
   PRIMARY KEY (`provider_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Déchargement des données de la table `service_provider`
+-- Structure de la table `situation_familiale`
 --
 
-INSERT INTO `service_provider` (`provider_id`, `firstname`, `lastname`, `cin`, `address`, `contact`, `start_contract`, `end_contract`, `number_days`, `post_occupe`, `salary`) VALUES
-(13, 'livaw', 'livafg', '999999999999', 'bira', '0345897845', '2022-11-20', '2022-11-23', NULL, 'dertyuhse', 700000),
-(15, 'livaT', 'livafgQQ', '000000000000', 'biraO', '0345897845', '2022-11-20', '2022-11-23', NULL, 'dertyuhseGG', 7000000),
-(14, 'BEN', 'TEN', '123456789456', 'TANA', '0341589658', '2022-11-07', '2022-11-14', NULL, 'BTP', 1000);
+DROP TABLE IF EXISTS `situation_familiale`;
+CREATE TABLE IF NOT EXISTS `situation_familiale` (
+  `family_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name_conjoint` varchar(255) NOT NULL,
+  `number_child` int(11) NOT NULL,
+  `monthlyemployee_id` int(11) NOT NULL,
+  PRIMARY KEY (`family_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -533,6 +544,31 @@ CREATE TABLE IF NOT EXISTS `tools_monthlyemployee` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `trash`
+--
+
+DROP TABLE IF EXISTS `trash`;
+CREATE TABLE IF NOT EXISTS `trash` (
+  `trash_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tool_id` int(11) NOT NULL,
+  `purchase_date` date DEFAULT NULL,
+  `identification_number` varchar(50) DEFAULT NULL,
+  `vendor` varchar(255) DEFAULT NULL,
+  `invoice_number` varchar(255) DEFAULT NULL,
+  `article_name` varchar(50) DEFAULT NULL,
+  `statue` varchar(50) DEFAULT NULL,
+  `historical` text,
+  `material_number` int(11) DEFAULT NULL,
+  `responsable` varchar(50) DEFAULT NULL,
+  `tooling_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`trash_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -552,8 +588,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`user_id`, `login`, `password`, `role_id`) VALUES
 (1, 'dgh3m@h3m.com', 'h3m@dg', 1),
 (2, 'infoh3m@h3m.com', 'h3m@info', 2),
-(3, 'comh3m@h3m.com', 'h3m@com', 3),
-(5, 'voaritianah3m@h3m.com', 'h3m@voaritiana', 3);
+(3, 'manampisoah3m@h3m.com', 'h3m@manampisoa', 3),
+(5, 'voaratianah3m@h3m.com', 'h3m@voaratiana', 5);
 
 -- --------------------------------------------------------
 
@@ -597,15 +633,7 @@ CREATE TABLE IF NOT EXISTS `week_presence` (
   `dailyemployee_id` int(11) DEFAULT NULL,
   `validation` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`weekpresence_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `week_presence`
---
-
-INSERT INTO `week_presence` (`weekpresence_id`, `month`, `start_date`, `nb_present`, `nb_absent`, `nb_half_day`, `total_salary`, `dailyemployee_id`, `validation`) VALUES
-(1, 'November 2022', '2022-11-09', 1, 0, 0, 7000, 1, 'NON VALIDE'),
-(2, 'November 2022', '2022-11-09', 0, 0, 1, 3500, 2, 'NON VALIDE');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

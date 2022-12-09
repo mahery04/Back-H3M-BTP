@@ -19,7 +19,7 @@ ServiceProvider.create = function(newServiceProvider, result) {
         if (err) {
             result(null,err)
         } else {
-            connection.query("INSERT INTO service_provider set provider_id=?,firstname=?,lastname=?,cin=?,address=?,contact=?,start_contract=?,end_contract=?,number_days=?,post_occupe=?,salary=?",[newServiceProvider.provider_id, newServiceProvider.firstname, newServiceProvider.lastname,newServiceProvider.cin,newServiceProvider.address, newServiceProvider.contact, newServiceProvider.start_contract,newServiceProvider.end_contract,number[0].number - 1, newServiceProvider.post_occupe,newServiceProvider.salary], function (err, res) {
+            connection.query("INSERT INTO service_provider set provider_id=?,firstname=?,lastname=?,cin=?,address=?,contact=?,start_contract=?,end_contract=?,number_days=?,post_occupe=?,salary=?",[newServiceProvider.provider_id, newServiceProvider.firstname, newServiceProvider.lastname,newServiceProvider.cin,newServiceProvider.address, newServiceProvider.contact, newServiceProvider.start_contract,newServiceProvider.end_contract,number[0].number, newServiceProvider.post_occupe,newServiceProvider.salary], function (err, res) {
                 if (err) {
                     console.log("error: ", err);
                     result(null, err)
@@ -72,7 +72,7 @@ ServiceProvider.update = function (id, serviceprovider, result) {
         if (err) {
             result(null, err)
         } else {
-            connection.query("UPDATE service_provider set firstname=?,lastname=?,cin=?,address=?,contact=?,start_contract=?,end_contract=?,number_days=?,post_occupe=?, salary=? WHERE provider_id=?", [serviceprovider.firstname, serviceprovider.lastname, serviceprovider.cin, serviceprovider.address, serviceprovider.contact, serviceprovider.start_contract, serviceprovider.end_contract, number[0].number - 1, serviceprovider.post_occupe,serviceprovider.salary, id], function (err, res) {
+            connection.query("UPDATE service_provider set firstname=?,lastname=?,cin=?,address=?,contact=?,start_contract=?,end_contract=?,number_days=?,post_occupe=?, salary=? WHERE provider_id=?", [serviceprovider.firstname, serviceprovider.lastname, serviceprovider.cin, serviceprovider.address, serviceprovider.contact, serviceprovider.start_contract, serviceprovider.end_contract, number[0].number, serviceprovider.post_occupe,serviceprovider.salary, id], function (err, res) {
                 if (err) {
                     console.log("error: ", err);
                     result(null, err)

@@ -1,7 +1,15 @@
 const MonthlySalary = require('../models/monthlySalaryModel');
 
+exports.getMonth = function (req,res) {
+    MonthlySalary.getMonth(function(err, monthlysalary) {
+        if (err) res.send(err)
+        console.log('res', monthlysalary);
+        res.send(monthlysalary);
+    })
+}
+
 exports.findAll = function (req, res) {
-    MonthlySalary.findAll(function (err, monthlySalary) {
+    MonthlySalary.findAll(req.params.id,function (err, monthlySalary) {
         if (err) res.send(err);
         console.log('res', monthlySalary);
         res.send(monthlySalary);
@@ -13,15 +21,15 @@ exports.findById = function (req, res) {
         if (err) res.send(err);
         console.log(monthlySalary);
         res.json({
-            monthlySalary_id: monthlySalary[0].monthlySalary_id,
-            heure_supplementaire: monthlySalary[0].heure_supplementaire,
-            minute_supplementaire: monthlySalary[0].minute_supplementaire,
+            monthlyemployee_id: monthlySalary[0].monthlyemployee_id,
+            monthlysalary_id: monthlySalary[0].monthlySalary_id,
+            month: monthlySalary[0].month,
+            montant_supplementaire: monthlySalary[0].montant_supplementaire,
             prime: monthlySalary[0].prime,
             conge: monthlySalary[0].conge,
             indeminite_transport: monthlySalary[0].indeminite_transport,
             autres_indeminités: monthlySalary[0].autres_indeminités,
-            heure_non_imposable: monthlySalary[0].heure_non_imposable,
-            minute_non_imposable: monthlySalary[0].minute_non_imposable,
+            montant_non_imposable: monthlySalary[0].montant_non_imposable,
             avance_quinzaine: monthlySalary[0].avance_quinzaine,
             avance_speciale: monthlySalary[0].avance_speciale,
             enfant_charge: monthlySalary[0].enfant_charge,
@@ -36,6 +44,15 @@ exports.getEmployees = function (req, res) {
         if (err) res.send(err);
         console.log('res', conge);
         res.send(conge);
+    })
+}
+
+exports.globalView = function (req, res) {
+    const newMonthlySalary = new MonthlySalary(req.body)
+    MonthlySalary.globalView(newMonthlySalary, function (err, monthlysalary) {
+        if (err) res.send(err)
+        console.log('res', monthlysalary);
+        res.send(monthlysalary);
     })
 }
 

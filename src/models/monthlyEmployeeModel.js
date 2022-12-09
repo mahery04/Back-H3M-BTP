@@ -18,6 +18,7 @@ var Monthlyemployee = function (monthlyemployee) {
     // this.motif              = monthlyemployee.motif;
     this.ostie_num          = monthlyemployee.ostie_num;
     this.cnaps_num          = monthlyemployee.cnaps_num;
+    this.par                = monthlyemployee.par;
 }
 
 Monthlyemployee.create = function (newMonthlyemployee, result) {
@@ -58,7 +59,7 @@ Monthlyemployee.findAll = function (result) {
 };
 
 Monthlyemployee.update = function (id, monthlyemployee, result) {
-    connection.query("UPDATE monthly_employee SET matricule=?,firstname=?,lastname=?,cin=?,address=?,contact=?,`group`=?,post_occupe=?,salary=?,`status`=?,code_chantier=?,category=?,hiring_date=?,ostie_num=?,cnaps_num=? WHERE monthlyemployee_id = ? ", [monthlyemployee.matricule, monthlyemployee.firstname, monthlyemployee.lastname, monthlyemployee.cin, monthlyemployee.address, monthlyemployee.contact, monthlyemployee.group, monthlyemployee.post_occupe, monthlyemployee.salary ,monthlyemployee.status, monthlyemployee.code_chantier, monthlyemployee.category, monthlyemployee.hiring_date, monthlyemployee.ostie_num, monthlyemployee.cnaps_num, id], function (err, res) {
+    connection.query("UPDATE monthly_employee SET matricule=?,firstname=?,lastname=?,cin=?,address=?,contact=?,`group`=?,post_occupe=?,salary=?,`status`=?,code_chantier=?,category=?,hiring_date=?,ostie_num=?,cnaps_num=? WHERE monthlyemployee_id = ? ", [monthlyemployee.matricule, monthlyemployee.firstname, monthlyemployee.lastname, monthlyemployee.cin, monthlyemployee.address, monthlyemployee.contact, monthlyemployee.group, monthlyemployee.post_occupe, monthlyemployee.salary ,monthlyemployee.status, monthlyemployee.code_chantier, monthlyemployee.category, monthlyemployee.hiring_date, monthlyemployee.ostie_num, monthlyemployee.cnaps_num,id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);

@@ -25,26 +25,37 @@ MonthlyPresence.getEmployee = function (result) {
 }
 
 MonthlyPresence.create = function (newPresence, result) {
-    connection.query(`SELECT DATEDIFF(?,?) as number `, [newPresence.return_date, newPresence.start_date], function (err, number) {
-        if (err) {
-            result(null, err)
-        } else {
-            connection.query("INSERT INTO monthly_presence set monthlyemployee_id=?,absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=?,approval_direction='NON VALIDE'", [newPresence.monthlyemployee_id, newPresence.absence_reason, newPresence.start_date, newPresence.return_date, number[0].number - 1, newPresence.visa_rh], function (err, res) {
-                if (err) {
-                    console.log("error: ", err);
-                    result(null, err)
-                } else {
-                    console.log(res);
-                    result(null, res)
-                }
-            })
-
-            console.log("PRESENCE ", newPresence);
-            console.log("NUMBER DAYS ", number);
-
-        }
-    })
+    if (newPresence.absence_reason === 'Excès de permission') {
+        connection.query("INSERT INTO monthly_presence set monthlyemployee_id=?,absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=?,approval_direction='NON VALIDE'",[newPresence.monthlyemployee_id, newPresence.absence_reason, newPresence.start_date,newPresence.return_date, newPresence.number_days_absence, newPresence.visa_rh], function (err, res) {
+            if (err) {
+                console.log("error: ", err);
+                result(null, err)
+            } else {
+                console.log(res)
+                result(null, res)
+            }
+        })
+        console.log('quelque close')
+    } else {
+        connection.query(`SELECT DATEDIFF(?,?) as number `, [newPresence.return_date, newPresence.start_date], function (err, number) {
+            if (err) {
+                result(null, err)
+            } else {
+                connection.query("INSERT INTO monthly_presence set monthlyemployee_id=?,absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=?,approval_direction='NON VALIDE'", [newPresence.monthlyemployee_id, newPresence.absence_reason, newPresence.start_date, newPresence.return_date, number[0].number, newPresence.visa_rh], function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(null, err)
+                    } else {
+                        console.log(res);
+                        result(null, res)
+                    }
+                })
+            }
+        })
+    } 
 }
+
+
 
 MonthlyPresence.findById = function (id, result) {
     connection.query("SELECT * FROM monthly_presence JOIN monthly_employee me ON monthly_presence.monthlyemployee_id=me.monthlyemployee_id WHERE monthlypresence_id = ? ", id, function (err, res) {
@@ -64,16 +75,23 @@ MonthlyPresence.update = function (id, presence, result) {
         if (err) {
             result(null, err)
         } else {
-            connection.query("UPDATE monthly_presence set absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=? WHERE monthlypresence_id=?", [presence.absence_reason, presence.start_date, presence.return_date, number[0].number - 1, presence.visa_rh, id], function (err, res) {
-                if (err) {
-                    console.log("error: ", err);
-                    result(null, err)
-                } else {
+            if (presence.absence_reason === 'Excès de permission') {
+                connection.query("UPDATE monthly_presence set absence_reason=?,start_date=?,return_date=?,number_days_absence=0.5,visa_rh=? WHERE monthlypresence_id=?", [presence.absence_reason, presence.start_date, presence.return_date, presence.visa_rh, id], function (err, res) {
                     console.log(res);
                     result(null, res)
-                }
-            })
-
+                })
+            }
+            else {
+                connection.query("UPDATE monthly_presence set absence_reason=?,start_date=?,return_date=?,number_days_absence=?,visa_rh=? WHERE monthlypresence_id=?", [presence.absence_reason, presence.start_date, presence.return_date, number[0].number, presence.visa_rh, id], function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(null, err)
+                    } else {
+                        console.log(res);
+                        result(null, res)
+                    }
+                })
+            }
             // console.log("NUMBER OF DAYS ", number);
         }
     })

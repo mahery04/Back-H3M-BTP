@@ -8,9 +8,9 @@ const mysql = require("mysql");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 const corsOptions = {
-  origin:'http://localhost:3000', 
-  credentials:true, //access-control-allow-credentials:true
-  optionSuccessStatus:200
+  origin: 'http://localhost:3000',
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200
 }
 
 const app = express();
@@ -19,7 +19,7 @@ const port = 4000;
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors(corsOptions)) 
+app.use(cors(corsOptions))
 
 const dailyEmployeeRoutes = require('./src/routes/dailyEmployeeRoutes');
 const monthlyEmployeeRoutes = require('./src/routes/monthlyEmployeeRoutes');
@@ -42,6 +42,10 @@ const contratMonthlyEmployeeRoutes = require('./src/routes/contratMonthlyEmploye
 const serviceProviderRoutes = require('./src/routes/serviceProviderRoutes')
 const permissionRoutes = require('./src/routes/permissionRoutes')
 const monthlySalaryRoutes = require('./src/routes/monthlySalaryRoutes')
+const salaryServiceProviderRoutes = require('./src/routes/salaryServiceProviderRoutes')
+const trashRoutes = require('./src/routes/trashRoutes')
+const historyToolRoutes = require('./src/routes/historyToolRoutes')
+const employeeFamilyRoutes = require('./src/routes/employeeFamilyRoutes')
 
 
 app.use('/api/dailyemployee', dailyEmployeeRoutes)
@@ -50,12 +54,12 @@ app.use('/api/user', userRoutes)
 app.use('/api/tooling', toolingRoutes)
 app.use('/api/commontools', commonToolsRoutes)
 app.use('/api/personnaltools', personnalToolsRoutes)
-app.use('/api/fullemployees',fullEmployeesRoutes)
+app.use('/api/fullemployees', fullEmployeesRoutes)
 app.use('/api/posts', postRoutes)
 app.use('/api/toolsdailyemployee', toolsDailyemployee)
-app.use('/api/toolsmonthlyemployee', toolsMonthlyemployee) 
-app.use('/api/weekpresence', weekpresenceRoutes) 
-app.use('/api/monthlyweekpresence', monthlyweekpresenceRoutes) 
+app.use('/api/toolsmonthlyemployee', toolsMonthlyemployee)
+app.use('/api/weekpresence', weekpresenceRoutes)
+app.use('/api/monthlyweekpresence', monthlyweekpresenceRoutes)
 app.use('/api/dailypresence', dailypresenceRoutes)
 app.use('/api/monthlypresence', monthlypresenceRoutes)
 app.use('/api/cantine', cantineRoutes)
@@ -65,10 +69,13 @@ app.use('/api/contratmonthlyemployee', contratMonthlyEmployeeRoutes)
 app.use('/api/serviceprovider', serviceProviderRoutes)
 app.use('/api/permission', permissionRoutes)
 app.use('/api/salarymonthly', monthlySalaryRoutes)
-
+app.use('/api/salaryserviceprovider', salaryServiceProviderRoutes)
+app.use('/api/trash', trashRoutes)
+app.use('/api/historytool', historyToolRoutes)
+app.use('/api/employeefamily', employeeFamilyRoutes)
 
 app.use(express.static(
-  path.join(__dirname,"./client/build")));
+  path.join(__dirname, "./client/build")));
 
 app.get("*", (req, res) => {
   res.sendFile(

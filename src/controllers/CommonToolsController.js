@@ -13,7 +13,6 @@ exports.findById = function (req, res) {
     CommonTools.findById(req.params.id, function (err, commontools) {
         if (err) res.send(err);
         console.log(commontools);
-        // res.json(commontools[0]);
         res.json({
             tool_id:                commontools[0].tool_id,
             purchase_date:          moment(commontools[0].purchase_date).format('YYYY-MM-DD'),
@@ -21,7 +20,6 @@ exports.findById = function (req, res) {
             num_fact:               commontools[0].num_fact,
             identification_number:  commontools[0].identification_number,
             article_name:           commontools[0].article_name,
-            // assignation_place:      commontools[0].assignation_place,
             statue:                 commontools[0].statue,
             historical:             commontools[0].historical,
             material_number:        commontools[0].material_number,
@@ -41,7 +39,6 @@ exports.create = function (req, res) {
         });
     }
 };
-
 exports.update = function (req, res) {
     const newCommonTools = new CommonTools(req.body);
     console.log(newCommonTools);

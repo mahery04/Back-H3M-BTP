@@ -56,6 +56,7 @@ exports.findById = function (req, res) {
         res.json({
             permission_id: presence[0].permission_id,
             monthlyemployee_id: presence[0].monthlyemployee_id,
+            date_permission: presence[0].date_permission,
             permission_reason: presence[0].permission_reason,
             start_hour_time : presence[0].start_hour_time,
             return_hour_time : presence[0].return_hour_time,
@@ -66,7 +67,8 @@ exports.findById = function (req, res) {
             permission_minute_before_request: presence[0].permission_minute_before_request,
             new_solde_permission: presence[0].new_solde_permission,
             visa_rh: presence[0].visa_rh,
-            approval_direction: presence[0].approval_direction
+            approval_direction: presence[0].approval_direction,
+            par: presence[0].par
         });
     });
 };

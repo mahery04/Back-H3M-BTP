@@ -34,6 +34,7 @@ exports.findById = function (req, res) {
             sanction:           dailyemployee[0].sanction,
             status:             dailyemployee[0].status,
             remarque:           dailyemployee[0].remarque,
+            par:                dailyemployee[0].par,
         });
     });
 };

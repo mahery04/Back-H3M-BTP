@@ -16,6 +16,7 @@ var Dailyemployee = function (dailyemployee) {
     this.status             = dailyemployee.status
     // this.salary             = dailyemployee.salary;
     this.remarque           = dailyemployee.remarque;
+    this.par                = dailyemployee.par
 };
 
 Dailyemployee.create = function (newDailyemployee, result) {
@@ -60,7 +61,7 @@ Dailyemployee.update = function (id, dailyemployee, result) {
     //     dailyemployee.start_date == null
     //     dailyemployee.hiring_date == null
     // }
-    connection.query("UPDATE daily_employee SET matricule=?,firstname=?,lastname=?,cin=?,address=?,post_id=?,code_chantier=?,`group`=?,contact=?,category=?,hiring_date=?,status=?,remarque=? WHERE dailyemployee_id = ? ", [dailyemployee.matricule, dailyemployee.firstname, dailyemployee.lastname, dailyemployee.cin, dailyemployee.address, dailyemployee.post_id, dailyemployee.code_chantier, dailyemployee.group, dailyemployee.contact, dailyemployee.category, dailyemployee.hiring_date , dailyemployee.status, dailyemployee.remarque,id], function (err, res) {
+    connection.query("UPDATE daily_employee SET matricule=?,firstname=?,lastname=?,cin=?,address=?,post_id=?,code_chantier=?,`group`=?,contact=?,category=?,hiring_date=?,status=?,remarque=? WHERE dailyemployee_id = ? ", [dailyemployee.matricule, dailyemployee.firstname, dailyemployee.lastname, dailyemployee.cin, dailyemployee.address, dailyemployee.post_id, dailyemployee.code_chantier, dailyemployee.group, dailyemployee.contact, dailyemployee.category, dailyemployee.hiring_date , dailyemployee.status, dailyemployee.remarque, id], function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);
