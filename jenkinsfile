@@ -1,0 +1,85 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'BACKEND_IMAGE_NAME', defaultValue: 'your-registry/your-backend-image', description: 'Backend Docker image name')
+        string(name: 'FRONTEND_IMAGE_NAME', defaultValue: 'your-registry/your-frontend-image', description: 'Frontend Docker image name')
+    }
+
+    environment {
+        NODEJS_HOME = tool 'NodeJS'
+        PATH = "${NODEJS_HOME}/bin:${PATH}"
+    }
+
+    triggers {
+        pollSCM('* * * * *') // Example: Poll SCM every minute. Adjust according to your needs.
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Backend Tests') {
+            steps {
+                script {
+                    dir('backend') {
+                        sh 'npm install'
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+
+        stage('Build Backend Docker Image') {
+            steps {
+                script {
+                    dir('backend') {
+                        sh "docker build -t ${params.BACKEND_IMAGE_NAME}:latest ."
+                    }
+                }
+            }
+        }
+
+        stage('Frontend Tests') {
+            steps {
+                script {
+                    dir('frontend') {
+                        sh 'npm install'
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+
+        stage('Build Frontend Docker Image') {
+            steps {
+                script {
+                    dir('frontend') {
+                        sh "docker build -t ${params.FRONTEND_IMAGE_NAME}:latest ."
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script {
+                    sh "docker push ${params.BACKEND_IMAGE_NAME}:latest"
+                    sh "docker push ${params.FRONTEND_IMAGE_NAME}:latest"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Docker image build and push successful!'
+        }
+        failure {
+            echo 'Docker image build or push failed!'
+        }
+    }
+}
