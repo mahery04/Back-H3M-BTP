@@ -6,7 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('id_hub')
         DOCKER_IMAGE_NAME = 'faniry123/back'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
-        OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
+        //OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
 
     stages {
@@ -42,11 +42,8 @@ pipeline {
         stage('Remove Previous Docker Images') {
             steps {
                 script {
-                    // Récupérer la liste des IDs des anciennes images
-                    def oldImageIDs = docker.images().findAll { image ->
-                        // Vérifier si l'image correspond au modèle d'ancienne image
-                        image.label("Jenkins-Build", "${BUILD_TAG}-previous")
-                    }.collect { it.id }
+                    // Utiliser une approche différente pour obtenir des informations sur les images
+                    def oldImageIDs = sh(script: 'docker images --format "{{.ID}}"', returnStdout: true).trim().split('\n')
 
                     // Supprimer les anciennes images
                     oldImageIDs.each { imageID ->
