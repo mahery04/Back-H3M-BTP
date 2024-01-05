@@ -3,14 +3,13 @@ pipeline {
 
     environment {
         NODEJS_HOME = tool 'nodejs'
-        //PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
         DOCKERHUB_CREDENTIALS = credentials('id_hub')
         DOCKER_IMAGE_NAME = 'faniry123/back'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
         OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
-    stages{
-        
+
+    stages {
         stage('Build Docker Image') {
             steps {
                 script {
@@ -58,12 +57,11 @@ pipeline {
         }
     }
 
-
     post {
         always {
-            // Nettoyer après le pipeline, par exemple, déconnexion du registre Docker
-            docker.image("mon_image_docker:latest").remove(force: true)
-            
+            // Nettoyer après la pipeline, par exemple, déconnexion du registre Docker
+            docker.image("${DOCKER_IMAGE_TAG}").remove(force: true)
+
             // Déconnexion de Docker Hub après la fin de la pipeline
             sh 'docker logout'
         }
