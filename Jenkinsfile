@@ -6,7 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('id_hub')
         DOCKER_IMAGE_NAME = 'faniry123/back'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
-        //OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
+        OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
 
     stages {
@@ -35,6 +35,21 @@ pipeline {
                 script {
                     // Pousser l'image Docker vers Docker Hub
                     sh "docker push ${DOCKER_IMAGE_TAG}"
+                }
+            }
+        }
+
+        stage('Stop and Remove Containers Using Previous Docker Images') {
+            steps {
+                script {
+                    // Récupérer la liste des IDs des conteneurs utilisant les anciennes images
+                    def oldContainerIDs = sh(script: 'docker ps -a --filter "ancestor=${OLD_DOCKER_IMAGE_TAG}" --format "{{.ID}}"', returnStdout: true).trim().split('\n')
+
+                    // Stopper et supprimer les conteneurs
+                    oldContainerIDs.each { containerID ->
+                        sh "docker stop ${containerID}"
+                        sh "docker rm ${containerID}"
+                    }
                 }
             }
         }
