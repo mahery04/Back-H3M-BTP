@@ -40,19 +40,30 @@ pipeline {
             }
         }
 
-        stage('Remove Old Docker Image') {
+        stage('Remove Previous Docker Images') {
             steps {
                 script {
-                    // Supprimer l'ancienne image Docker
-                        try {
-                            docker.image("${OLD_DOCKER_IMAGE_TAG}").remove()
-                         } catch (Exception e) {
-                            // Gérer les erreurs éventuelles ici
-                            echo "Erreur lors de la suppression de l'ancienne image Docker : ${e.message}"
+                    // Récupérer la liste des IDs des anciennes images
+                    def oldImageIDs = docker.images().findAll { image ->
+                        // Vérifier si l'image correspond au modèle d'ancienne image
+                        image.label("Jenkins-Build", "${BUILD_TAG}-previous")
+                    }.collect { it.id }
+
+                    // Supprimer les anciennes images
+                    oldImageIDs.each { imageID ->
+                        docker.image(imageID).remove(force: true)
                     }
                 }
             }
         }
+    }
+
+    post {
+        always {
+            // Nettoyer après le pipeline, par exemple, déconnexion du registre Docker
+            docker.image("mon_image_docker:latest").remove(force: true)
+        }
+    }
 
     }
 
