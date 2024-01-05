@@ -50,7 +50,7 @@ pipeline {
 
                     // Supprimer les anciennes images
                     oldImageIDs.each { imageID ->
-                        docker.image(imageID).remove(force: true)
+                        sh "docker rmi -f ${imageID}"
                     }
                 }
             }
@@ -58,10 +58,6 @@ pipeline {
     }
 
     post {
-        always {
-            // Nettoyer après la pipeline, par exemple, déconnexion du registre Docker
-            docker.image("${DOCKER_IMAGE_TAG}").remove(force: true)
-
             // Déconnexion de Docker Hub après la fin de la pipeline
             sh 'docker logout'
         }
