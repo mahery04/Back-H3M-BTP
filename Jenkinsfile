@@ -6,7 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('id_hub')
         DOCKER_IMAGE_NAME = 'faniry123/back'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
-        OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
+        //OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
 
     stages {
@@ -43,26 +43,18 @@ pipeline {
             steps {
                 script {
                     // Récupérer la liste des IDs des conteneurs utilisant les anciennes images
-                    def oldContainerIDs = sh(script: 'docker ps -a --filter "ancestor=${OLD_DOCKER_IMAGE_TAG}" --format "{{.ID}}"', returnStdout: true).trim().split('\n')
+                    def oldContainerIDs = sh(script: 'docker ps -a --filter "ancestor=${OLD_DOCKER_IMAGE_TAG}" --format "{{.ID}}"', returnStatus: true).trim()
 
-                    // Stopper et supprimer les conteneurs
-                    oldContainerIDs.each { containerID ->
-                        sh "docker stop ${containerID}"
-                        sh "docker rm ${containerID}"
-                    }
-                }
-            }
-        }
-
-        stage('Remove Previous Docker Images') {
-            steps {
-                script {
-                    // Utiliser une approche différente pour obtenir des informations sur les images
-                    def oldImageIDs = sh(script: 'docker images --format "{{.ID}}"', returnStdout: true).trim().split('\n')
-
-                    // Supprimer les anciennes images
-                    oldImageIDs.each { imageID ->
-                        sh "docker rmi -f ${imageID}"
+                    // Vérifier si des conteneurs ont été trouvés avant de tenter de les arrêter et de les supprimer
+                    if (oldContainerIDs) {
+                        echo "Arrêt et suppression des conteneurs utilisant l'ancienne image..."
+                        // Stopper et supprimer les conteneurs
+                        oldContainerIDs.split('\n').each { containerID ->
+                            sh "docker stop ${containerID}"
+                            sh "docker rm ${containerID}"
+                        }
+                    } else {
+                        echo "Aucun conteneur utilisant l'ancienne image n'a été trouvé."
                     }
                 }
             }
