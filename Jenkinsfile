@@ -58,6 +58,7 @@ pipeline {
     }
 
     post {
+        always {
             // Déconnexion de Docker Hub après la fin de la pipeline
             sh 'docker logout'
         }
