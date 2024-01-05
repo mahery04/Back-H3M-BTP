@@ -44,10 +44,16 @@ pipeline {
             steps {
                 script {
                     // Supprimer l'ancienne image Docker
-                    docker.image("${OLD_DOCKER_IMAGE_TAG}").remove()
+                        try {
+                            docker.image("${OLD_DOCKER_IMAGE_TAG}").remove()
+                         } catch (Exception e) {
+                            // Gérer les erreurs éventuelles ici
+                            echo "Erreur lors de la suppression de l'ancienne image Docker : ${e.message}"
+                    }
                 }
             }
         }
+
     }
 
     post {
