@@ -2,7 +2,7 @@
 FROM node:14-alpine3.16
 
 # Définissez le répertoire de travail dans le conteneur
-WORKDIR .app
+WORKDIR /app/backend
 # Copiez le fichier package.json et package-lock.json dans le conteneur
 COPY package*.json ./
 
