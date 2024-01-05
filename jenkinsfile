@@ -1,85 +1,59 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'BACKEND_IMAGE_NAME', defaultValue: 'your-registry/your-backend-image', description: 'Backend Docker image name')
-        string(name: 'FRONTEND_IMAGE_NAME', defaultValue: 'your-registry/your-frontend-image', description: 'Frontend Docker image name')
-    }
-
     environment {
-        NODEJS_HOME = tool 'NodeJS'
-        PATH = "${NODEJS_HOME}/bin:${PATH}"
+        NODEJS_HOME = tool 'nodejs'
+        //PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+        DOCKERHUB_CREDENTIALS = credentials('id_hub')
+        DOCKER_IMAGE_NAME = 'faniry123/back_3M'
+        DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
+        OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
-
-    triggers {
-        pollSCM('* * * * *') // Example: Poll SCM every minute. Adjust according to your needs.
-    }
-
-    stages {
-        stage('Checkout') {
+    stages{
+        
+        stage('Build Docker Image') {
             steps {
-                checkout scm
+                script {
+                    // Construction de l'image Docker
+                    docker.build("${DOCKER_IMAGE_TAG}", '.')
+                }
             }
         }
 
-        stage('Backend Tests') {
+        stage('Login to Docker Hub') {
             steps {
                 script {
-                    dir('backend') {
-                        sh 'npm install'
-                        sh 'npm test'
+                    // Connexion à Docker Hub en utilisant les identifiants
+                    withCredentials([usernamePassword(credentialsId: 'id_hub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+                        sh "echo \$DOCKERHUB_CREDENTIALS_PSW | docker login -u \$DOCKERHUB_CREDENTIALS_USR --password-stdin"
                     }
                 }
             }
         }
 
-        stage('Build Backend Docker Image') {
+        stage('Push to Docker Hub') {
             steps {
                 script {
-                    dir('backend') {
-                        sh "docker build -t ${params.BACKEND_IMAGE_NAME}:latest ."
-                    }
+                    // Pousser l'image Docker vers Docker Hub
+                    sh "docker push ${DOCKER_IMAGE_TAG}"
                 }
             }
         }
 
-        stage('Frontend Tests') {
+        stage('Remove Old Docker Image') {
             steps {
                 script {
-                    dir('frontend') {
-                        sh 'npm install'
-                        sh 'npm test'
-                    }
-                }
-            }
-        }
-
-        stage('Build Frontend Docker Image') {
-            steps {
-                script {
-                    dir('frontend') {
-                        sh "docker build -t ${params.FRONTEND_IMAGE_NAME}:latest ."
-                    }
-                }
-            }
-        }
-
-        stage('Push Docker Images') {
-            steps {
-                script {
-                    sh "docker push ${params.BACKEND_IMAGE_NAME}:latest"
-                    sh "docker push ${params.FRONTEND_IMAGE_NAME}:latest"
+                    // Supprimer l'ancienne image Docker
+                    docker.image("${OLD_DOCKER_IMAGE_TAG}").remove()
                 }
             }
         }
     }
 
     post {
-        success {
-            echo 'Docker image build and push successful!'
-        }
-        failure {
-            echo 'Docker image build or push failed!'
+        always {
+            // Déconnexion de Docker Hub après la fin de la pipeline
+            sh 'docker logout'
         }
     }
 }
