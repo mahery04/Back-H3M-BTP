@@ -53,6 +53,9 @@ pipeline {
                             sh "docker stop ${containerID}"
                             sh "docker rm ${containerID}"
                         }
+
+                        // Supprimer l'ancienne image
+                        sh "docker rmi -f ${OLD_DOCKER_IMAGE_TAG}"
                     } else {
                         echo "Aucun conteneur utilisant l'ancienne image n'a été trouvé."
                     }
