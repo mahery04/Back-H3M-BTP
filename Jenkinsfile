@@ -6,7 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('id_hub')
         DOCKER_IMAGE_NAME = 'faniry123/back'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
-        //OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
+        OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
 
     stages {
@@ -46,7 +46,7 @@ pipeline {
                     def oldContainerIDs = sh(script: 'docker ps -a --filter "ancestor=${OLD_DOCKER_IMAGE_TAG}" --format "{{.ID}}"', returnStatus: true).trim()
 
                     // Vérifier si des conteneurs ont été trouvés avant de tenter de les arrêter et de les supprimer
-                    if (oldContainerIDs) {
+                    if (oldContainerIDs && oldContainerIDs != '0') {
                         echo "Arrêt et suppression des conteneurs utilisant l'ancienne image..."
                         // Stopper et supprimer les conteneurs
                         oldContainerIDs.split('\n').each { containerID ->
