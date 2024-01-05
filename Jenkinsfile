@@ -43,10 +43,10 @@ pipeline {
             steps {
                 script {
                     // Récupérer la liste des IDs des conteneurs utilisant les anciennes images
-                    def oldContainerIDs = sh(script: 'docker ps -a --filter "ancestor=${OLD_DOCKER_IMAGE_TAG}" --format "{{.ID}}"', returnStatus: true).trim()
+                    def oldContainerIDs = sh(script: 'docker ps -a --filter "ancestor=${OLD_DOCKER_IMAGE_TAG}" --format "{{.ID}}"', returnStdout: true).trim()
 
                     // Vérifier si des conteneurs ont été trouvés avant de tenter de les arrêter et de les supprimer
-                    if (oldContainerIDs && oldContainerIDs != '0') {
+                    if (oldContainerIDs && oldContainerIDs.trim().size() > 0) {
                         echo "Arrêt et suppression des conteneurs utilisant l'ancienne image..."
                         // Stopper et supprimer les conteneurs
                         oldContainerIDs.split('\n').each { containerID ->
