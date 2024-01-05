@@ -5,7 +5,7 @@ pipeline {
         NODEJS_HOME = tool 'nodejs'
         //PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
         DOCKERHUB_CREDENTIALS = credentials('id_hub')
-        DOCKER_IMAGE_NAME = 'faniry123/back_3M'
+        DOCKER_IMAGE_NAME = 'faniry123/back'
         DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
         OLD_DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:${BUILD_NUMBER - 1}"
     }
